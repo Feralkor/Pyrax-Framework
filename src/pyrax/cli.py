@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 
+from pyrax.bootstrap import bootstrap_discovery
 from pyrax.readiness import assess_domain_pack
 from pyrax.scaffold import scaffold_project
 from pyrax.validation import load_canonical_schema, load_document, load_schema, validate_domain_pack
@@ -47,6 +48,17 @@ def cmd_assess(args: argparse.Namespace) -> int:
     return 0 if report.production_ready else 2
 
 
+def cmd_bootstrap(args: argparse.Namespace) -> int:
+    root = bootstrap_discovery(
+        args.organization,
+        args.destination,
+        archetype=args.archetype,
+        force=args.force,
+    )
+    print(root)
+    return 0
+
+
 def cmd_scaffold(args: argparse.Namespace) -> int:
     pack = load_document(args.domain_pack) if args.domain_pack else None
     if pack:
@@ -69,6 +81,16 @@ def cmd_scaffold(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pyrax", description="Pyrax Framework CLI")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    bootstrap = sub.add_parser(
+        "bootstrap",
+        help="Create a discovery workspace for a new organization before a Domain Pack exists",
+    )
+    bootstrap.add_argument("organization")
+    bootstrap.add_argument("--destination", default=".")
+    bootstrap.add_argument("--archetype", default="to-be-discovered")
+    bootstrap.add_argument("--force", action="store_true")
+    bootstrap.set_defaults(func=cmd_bootstrap)
 
     validate = sub.add_parser("validate", help="Validate a Domain Pack against canonical contracts")
     validate.add_argument("domain_pack")
