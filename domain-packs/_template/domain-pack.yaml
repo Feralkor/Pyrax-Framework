@@ -22,6 +22,20 @@ entities:
     key: id
 
 relationships: []
+
+ontology:
+  entity_types: []
+  relationship_types: []
+  event_types: []
+  action_types: []
+  constraints: []
+
+decision_graph:
+  nodes: []
+  edges: []
+
+scenarios: []
+
 operational_grain: ""
 states: []
 timestamps: []
@@ -71,6 +85,9 @@ outcomes:
 guardrails:
   - UNKNOWN must not be converted to zero
 
+maturity:
+  target: P3_ASSISTED_INTELLIGENCE
+
 qa:
   golden_cases: 0
   contract_tests: false
@@ -78,6 +95,12 @@ qa:
 
 implementation:
   runtime: false
+  quality: false
+  reconciliation_tests: false
+  anticipation: false
+  scenarios: false
+  operational_memory: false
+  feedback_loop: false
   integration_tests: false
   deployment: false
   technology_profile: desktop-local
