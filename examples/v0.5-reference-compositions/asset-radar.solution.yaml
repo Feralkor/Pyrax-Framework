@@ -1,0 +1,28 @@
+profile: asset-radar
+description: Minimal Pyrax composition inspired by Asset Radar. Reference pattern only.
+blocks:
+  - dead-reckoning
+  - coverage
+  - baseline-deviation
+  - outcome-feedback
+adapters:
+  - telemetry
+  - rest-api
+  - sql
+ui_components:
+  - control-tower
+  - object-360
+  - timeline
+  - evidence-drawer
+maturity_target: P3_ASSISTED_INTELLIGENCE
+technology_profile: hybrid
+overrides:
+  domain_examples:
+    - asset
+    - position
+    - telemetry-event
+    - last-known-state
+  candidate_decisions:
+    - stale asset investigation
+    - position confidence review
+    - telemetry gap follow-up
