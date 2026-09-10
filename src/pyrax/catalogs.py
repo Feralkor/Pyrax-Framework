@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-
 SOLUTION_PROFILES: dict[str, dict] = {
     "fleet-intelligence": {
         "description": "Fleet, route, driver and transportation decision intelligence.",
