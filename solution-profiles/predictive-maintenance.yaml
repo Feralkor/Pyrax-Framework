@@ -1,0 +1,18 @@
+id: predictive-maintenance
+description: Condition, degradation and maintenance-priority intelligence.
+blocks:
+  - baseline-deviation
+  - rate-of-change
+  - capacity-risk
+  - outcome-feedback
+adapters:
+  - telemetry
+  - sql
+  - files
+ui_components:
+  - object-360
+  - timeline
+  - scenario-panel
+  - evidence-drawer
+  - decision-card
+maturity_target: P4_PREDICTIVE_OPERATIONS
