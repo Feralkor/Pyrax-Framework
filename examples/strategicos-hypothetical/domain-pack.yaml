@@ -1,0 +1,118 @@
+id: strategicos-predictive-intelligence-hypothetical
+name: Strategicos Predictive Intelligence — Hypothetical
+version: 0.1.0
+description: Hypothetical example used only to demonstrate Pyrax fine-tuning. It does not assert access to or semantics of Strategicos Group internal data.
+problem:
+  decision_to_improve: Identify business clients or operational areas that may need proactive strategic intervention before lagging indicators make the problem obvious.
+  decision_owner: Strategic or operational leadership
+  allowed_actions:
+    - review evidence
+    - prioritize diagnostic work
+    - contact responsible team
+    - run scenario analysis
+sources:
+  - id: crm
+    system: CRM
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: client + interaction + opportunity
+    freshness: unknown
+  - id: erp
+    system: ERP
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: client + document + accounting_period
+    freshness: unknown
+  - id: finance
+    system: Financial System
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: client + accounting_period
+    freshness: unknown
+  - id: regulatory
+    system: External Regulatory Sources
+    authority: EXTERNAL
+    access_mode: read-only
+    grain: rule + effective_period
+    freshness: source-dependent
+entities:
+  - name: Client
+    key: client_id
+  - name: Contract
+    key: contract_id
+  - name: Opportunity
+    key: opportunity_id
+  - name: Project
+    key: project_id
+  - name: FinancialPeriod
+    key: client_id + accounting_period
+relationships:
+  - from: Client
+    to: Contract
+    status: CANDIDATE
+  - from: Client
+    to: FinancialPeriod
+    status: CANDIDATE
+operational_grain: client + business_period
+states: [NORMAL, ATTENTION, CRITICAL, INSUFFICIENT_DATA]
+timestamps: [observed_at, accounting_period, interaction_at]
+semantics:
+  certified: []
+  candidates:
+    - client identity mapping across systems
+    - revenue
+    - operational cost
+    - pipeline value
+    - ticket volume
+  unknowns:
+    - margin definition
+    - client risk policy
+    - comparable baseline window
+    - authoritative renewal date
+signals:
+  - id: sustained-margin-deterioration
+    rule: certified_margin shows sustained negative rate-of-change against comparable baseline
+    evidence_required: [erp, finance]
+    prohibited_interpretations:
+      - deterioration proves client churn
+  - id: commercial-operational-pressure
+    rule: multiple certified indicators deteriorate within the same comparable business window
+    evidence_required: [crm, erp, finance]
+    prohibited_interpretations:
+      - correlation proves root cause
+decisions:
+  - id: proactive-strategic-review
+    triggered_by: [sustained-margin-deterioration, commercial-operational-pressure]
+    recommendation: Review the client context and prioritize a diagnostic intervention with supporting evidence.
+    constraints:
+      - never infer causal responsibility from correlation alone
+      - do not expose a recommendation when required identity joins are unvalidated
+    human_approval_required: true
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, quality, confidence, lineage]
+outcomes:
+  - metric: intervention_outcome
+    success_condition: Leadership can record whether the intervention reduced the observed risk or created a validated opportunity.
+guardrails:
+  - Hypothetical example only; source semantics must be discovered and certified before implementation claims.
+  - UNKNOWN must never be converted to zero.
+  - External regulatory information must preserve source and effective date.
+  - Statistical association must not be presented as proven causality.
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: web-api
+ux:
+  primary_user: Strategic leadership
+  primary_question: Which client or area deserves proactive attention, why, and what evidence supports it?
+  primary_action: Open evidence, run a diagnostic review, and decide whether to intervene.
