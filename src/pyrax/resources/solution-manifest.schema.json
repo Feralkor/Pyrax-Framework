@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/solution-manifest.schema.json",
+  "title": "Pyrax Solution Manifest",
+  "type": "object",
+  "required": ["profile"],
+  "properties": {
+    "profile": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "blocks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "adapters": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "ui_components": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "maturity_target": {"enum": ["P0_DISCOVERY", "P1_TRUTH_MAPPED", "P2_OPERATIONAL_STATE", "P3_ASSISTED_INTELLIGENCE", "P4_PREDICTIVE_OPERATIONS", "P5_CLOSED_LOOP_INTELLIGENCE"]},
+    "technology_profile": {"type": "string"},
+    "domain_pack": {"type": ["string", "null"]},
+    "overrides": {"type": "object"}
+  },
+  "additionalProperties": false
+}
