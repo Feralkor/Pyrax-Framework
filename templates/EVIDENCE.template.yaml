@@ -1,0 +1,14 @@
+evidence_id: replace-evidence
+source: ""
+grain: ""
+observed_at: null
+cutoff: null
+rule_version: null
+quality: UNKNOWN
+confidence: INSUFFICIENT_DATA
+lineage: {}
+supports:
+  facts: []
+  signals: []
+  decisions: []
+notes: ""
