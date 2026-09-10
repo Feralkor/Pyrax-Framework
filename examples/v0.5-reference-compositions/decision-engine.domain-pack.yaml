@@ -1,0 +1,72 @@
+id: decision-engine-reference
+name: Decision Engine Reference
+version: 0.1.0
+description: Minimal non-customer reference Domain Pack for evidence-backed decision intelligence.
+problem:
+  decision_to_improve: Prioritize candidate actions using explicit signals, constraints, scenarios and evidence.
+  decision_owner: Decision Owner
+  allowed_actions: [review-candidate-action, approve-action]
+sources:
+  - id: decision-source
+    system: Decision context source placeholder
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: decision-context-observation
+    freshness: unknown
+entities:
+  - name: DecisionContext
+    key: context_id
+  - name: CandidateAction
+    key: action_id
+relationships: []
+ontology:
+  entity_types: [DecisionContext, CandidateAction]
+  relationship_types: [ContextHasCandidateAction]
+  event_types: [SignalObserved, OutcomeObserved]
+  action_types: [ReviewCandidateAction, ApproveAction]
+  constraints: [Recommendations require Evidence and human approval by default]
+operational_grain: decision-context
+timestamps: [observed_at]
+states: [OPEN, REVIEW_REQUIRED, RESOLVED, UNKNOWN]
+semantics:
+  certified: []
+  candidates: [decision-priority]
+  unknowns: [causal-effect]
+signals:
+  - id: decision-pressure
+    rule: Rank or flag candidate actions only when required facts, constraints and Evidence are sufficient.
+    evidence_required: [decision-source]
+decisions:
+  - id: review-candidate-action
+    triggered_by: [decision-pressure]
+    recommendation: Review the highest evidence-backed candidate action and compare explicit scenarios before approval.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, confidence]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: decision-outcome-quality
+    success_condition: Improved governed outcome against the decision baseline after reviewed actions.
+guardrails:
+  - UNKNOWN must not be converted to zero
+  - Decision Graph does not prove causality
+  - Scenario output must not mutate canonical state
+maturity:
+  target: P4_PREDICTIVE_OPERATIONS
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: web-api
+ux:
+  primary_user: Decision Owner
+  primary_question: Which candidate action is most supported by evidence and constraints?
+  primary_action: Review candidate action
