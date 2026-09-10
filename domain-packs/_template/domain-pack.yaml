@@ -1,35 +1,50 @@
-domain_pack:
-  id: replace-me
-  name: Replace Me
-  version: 0.1.0
-  status: DRAFT
+id: replace-me
+name: Replace Me
+version: 0.1.0
+description: ""
 
 problem:
-  statement: ""
-  decision_owner: ""
   decision_to_improve: ""
-  allowed_actions: []
+  decision_owner: ""
+  allowed_actions:
+    - review
 
-systems_of_record: []
+sources:
+  - id: source-1
+    system: ""
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: ""
+    freshness: null
 
-entities: []
+entities:
+  - name: Entity
+    key: id
 
 relationships: []
-
 operational_grain: ""
-
 states: []
-
-time_fields: []
+timestamps: []
 
 semantics:
   certified: []
-  candidate: []
-  unknown: []
+  candidates: []
+  unknowns: []
 
-signals: []
+signals:
+  - id: signal-1
+    rule: ""
+    evidence_required:
+      - source-1
 
-decisions: []
+
+decisions:
+  - id: decision-1
+    triggered_by:
+      - signal-1
+    recommendation: ""
+    constraints: []
+    human_approval_required: true
 
 confidence:
   vocabulary:
@@ -37,20 +52,25 @@ confidence:
     - ASSISTED
     - INSUFFICIENT_DATA
 
-approval_policy: HUMAN_ASSISTED
+approval_policy:
+  mode: HUMAN_ASSISTED
 
 evidence:
   required: true
   fields:
     - source
-    - cutoff
+    - grain
+    - observed_at
     - rule_version
-    - quality_state
+    - quality
     - confidence
 
-outcomes: []
+outcomes:
+  - metric: outcome-1
+    success_condition: ""
 
-guardrails: []
+guardrails:
+  - UNKNOWN must not be converted to zero
 
 ux:
   primary_user: ""
