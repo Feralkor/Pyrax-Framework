@@ -10,3 +10,11 @@ def test_packaged_domain_pack_schema_matches_root_schema() -> None:
         (ROOT / "src" / "pyrax" / "resources" / "domain-pack.schema.json").read_text(encoding="utf-8")
     )
     assert packaged_schema == root_schema
+
+
+def test_packaged_solution_manifest_schema_matches_root_schema() -> None:
+    root_schema = json.loads((ROOT / "schemas" / "solution-manifest.schema.json").read_text(encoding="utf-8"))
+    packaged_schema = json.loads(
+        (ROOT / "src" / "pyrax" / "resources" / "solution-manifest.schema.json").read_text(encoding="utf-8")
+    )
+    assert packaged_schema == root_schema
