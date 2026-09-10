@@ -1,0 +1,71 @@
+id: asset-radar-reference
+name: Asset Radar Reference
+version: 0.1.0
+description: Minimal non-customer reference Domain Pack for asset visibility and telemetry confidence.
+problem:
+  decision_to_improve: Detect stale or uncertain asset state early enough for operational follow-up.
+  decision_owner: Operations Controller
+  allowed_actions: [investigate-asset, review-position]
+sources:
+  - id: telemetry-source
+    system: Asset telemetry placeholder
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: asset-event
+    freshness: unknown
+entities:
+  - name: Asset
+    key: asset_id
+  - name: PositionObservation
+    key: observation_id
+relationships: []
+ontology:
+  entity_types: [Asset, PositionObservation]
+  relationship_types: [AssetHasObservation]
+  event_types: [PositionObserved]
+  action_types: [InvestigateAsset]
+  constraints: [Projected position must remain distinct from observed position]
+operational_grain: asset
+timestamps: [observed_at, ingested_at]
+states: [OBSERVED, STALE, UNKNOWN]
+semantics:
+  certified: []
+  candidates: [position-freshness]
+  unknowns: [position-confidence-calibration]
+signals:
+  - id: stale-asset-state
+    rule: Flag assets whose last valid observation exceeds a governed freshness threshold.
+    evidence_required: [telemetry-source]
+decisions:
+  - id: investigate-stale-asset
+    triggered_by: [stale-asset-state]
+    recommendation: Investigate the asset when telemetry freshness is insufficient for operational confidence.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, confidence]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: stale-state-resolution
+    success_condition: Reduced duration of unresolved stale asset states.
+guardrails:
+  - UNKNOWN must not be converted to zero
+  - Projected position is never labeled as observed position
+maturity:
+  target: P3_ASSISTED_INTELLIGENCE
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: hybrid
+ux:
+  primary_user: Operations Controller
+  primary_question: Which assets have stale or uncertain state?
+  primary_action: Investigate asset
