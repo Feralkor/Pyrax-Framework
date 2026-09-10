@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/domain-pack.schema.json",
+  "title": "Pyrax Domain Pack",
+  "type": "object",
+  "required": ["id", "name", "version", "problem", "entities", "signals", "decisions"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "problem": {"type": "object"},
+    "systems_of_record": {"type": "array"},
+    "entities": {"type": "array"},
+    "relationships": {"type": "array"},
+    "operational_grain": {"type": "string"},
+    "signals": {"type": "array"},
+    "decisions": {"type": "array"},
+    "guardrails": {"type": "array"},
+    "outcomes": {"type": "array"}
+  },
+  "additionalProperties": true
+}
