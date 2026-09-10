@@ -37,7 +37,6 @@ signals:
     evidence_required:
       - source-1
 
-
 decisions:
   - id: decision-1
     triggered_by:
@@ -71,6 +70,17 @@ outcomes:
 
 guardrails:
   - UNKNOWN must not be converted to zero
+
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: desktop-local
 
 ux:
   primary_user: ""
