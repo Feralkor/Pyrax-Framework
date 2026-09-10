@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import yaml
-
 
 DISCOVERY_FILES = {
     "organization-profile.yaml": """organization:\n  name: {name}\n  type: \"\"\n  industry: \"\"\n  size: \"\"\n  geography: []\n  business_model: \"\"\n  products_services: []\n  customers_users: []\n\noperating_model:\n  critical_processes: []\n  decision_makers: []\n  service_levels: []\n  bottlenecks: []\n  recurrent_manual_checks: []\n  recurrent_exceptions: []\n\ntechnology:\n  systems: []\n  integrations: []\n  deployment_constraints: []\n  security_constraints: []\n  data_residency: []\n\nopportunities:\n  pains: []\n  late_decisions: []\n  reactive_processes: []\n  candidate_use_cases: []\n\nconstraints:\n  regulatory: []\n  privacy: []\n  destructive_actions: []\n  human_approval_required: []\n\nunknowns: []\n""",
