@@ -91,6 +91,35 @@ Reusable presentation contracts include Control Tower, Andon, Heatmap, Timeline,
 ### Adapter catalog
 Reusable adapter classes cover SQL, REST APIs, telemetry, files and event streams while preserving source identity, grain, freshness, quality and lineage boundaries.
 
+## MCP v0.1 — Internal Agent Interface
+
+Pyrax now includes an intentionally narrow MCP interface for internal validation with AI agents.
+
+Architecture:
+
+`Pyrax Core -> pyrax.api -> CLI / MCP / future adapters`
+
+The MCP does not call the CLI or parse console output. `src/pyrax/api.py` is the public programmatic boundary and `src/pyrax_mcp/` is a protocol adapter over that same logic.
+
+V0.1 exposes six read-only tools over local stdio:
+
+- `pyrax_validate_domain_pack`
+- `pyrax_assess_readiness`
+- `pyrax_assess_maturity`
+- `pyrax_validate_solution_manifest`
+- `pyrax_get_solution_profile`
+- `pyrax_get_catalog`
+
+Every public API/MCP result carries `framework_version` and `api_version`. Validation failures are returned as structured data rather than protocol failures.
+
+Run locally:
+
+```bash
+pyrax-mcp
+```
+
+The v0.1 MCP deliberately has no Oracle/WMS/database access, no scaffold/file-writing tool, no remote HTTP deployment, no OAuth, no billing and no multi-tenancy. See `docs/MCP-INTERNAL.md` and `docs/MCP-SPECIFICATION.md`.
+
 ## Fundamental rule
 
 > Reconstruct reality first. Calculate second. Explain third. Recommend last.
@@ -100,6 +129,8 @@ Reusable adapter classes cover SQL, REST APIs, telemetry, files and event stream
 ```bash
 python -m pip install -e ".[dev]"
 ```
+
+The package installs both `pyrax` and `pyrax-mcp`. The MCP runtime uses the official Python SDK v2.
 
 ## Start in a new company
 
@@ -171,9 +202,10 @@ These are reusable composition examples, not certified customer Domain Packs.
 
 ## Repository structure
 
-- `src/pyrax/` — CLI, composition, catalogs, runtime, readiness and maturity;
+- `src/pyrax/` — public API, CLI, composition, catalogs, runtime, readiness and maturity;
+- `src/pyrax_mcp/` — MCP v0.1 internal agent adapter;
 - `solution-profiles/` — reusable product presets;
-- `docs/` — canonical recipe, architecture and productization contracts;
+- `docs/` — canonical recipe, architecture, productization and MCP contracts;
 - `schemas/` — Domain Pack and Solution Manifest contracts;
 - `templates/` — discovery/product/engineering templates;
 - `domain-packs/` — domain customization template;
@@ -181,10 +213,10 @@ These are reusable composition examples, not certified customer Domain Packs.
 - `bootstrap/` — optional technology profiles;
 - `examples/` — reference patterns and V0.5 reference compositions;
 - `golden-cases/` — deterministic framework reference scenarios;
-- `tests/` — regression and composition tests;
+- `tests/` — regression, public API, composition and MCP tests;
 - `.github/workflows/` — quality gates.
 
-## Guardrails preserved in V0.5
+## Guardrails preserved
 
 - UNKNOWN/UNAVAILABLE/NULL are not zero.
 - Profiles and reference compositions are hypotheses, not business truth.
@@ -194,6 +226,7 @@ These are reusable composition examples, not certified customer Domain Packs.
 - Ontology and Decision Graph integrity remain enforced.
 - Customer-specific semantics stay outside generic catalogs and runtime.
 - A valid composition is not automatically production-ready.
+- MCP v0.1 is read-only and cannot access external operational systems.
 
 ## Quality
 
@@ -201,7 +234,7 @@ These are reusable composition examples, not certified customer Domain Packs.
 make quality
 ```
 
-CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fixtures/examples, exercises bootstrap/readiness/maturity/composition/scaffolding and builds the package.
+CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fixtures/examples, exercises bootstrap/readiness/maturity/composition/scaffolding/MCP behavior and builds the package.
 
 ## Canonical reading
 
@@ -229,11 +262,13 @@ CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fix
 22. `docs/RUNTIME-CONTRACT.md`
 23. `docs/QA-STANDARD.md`
 24. `docs/CLI-AND-SCAFFOLDING.md`
-
-`docs/MCP-SPECIFICATION.md` remains deferred. MCP implementation is intentionally outside V0.5.
+25. `docs/MCP-SPECIFICATION.md`
+26. `docs/MCP-INTERNAL.md`
 
 ## Status
 
 Framework line: **v0.5 — Productization & Composition**.
 
-V0.5 is a release-candidate line until its CI and release gates are green.
+Agent interface: **Pyrax MCP v0.1 — Internal Validation**.
+
+Neither line should be called stable until its CI/release gates are green.
