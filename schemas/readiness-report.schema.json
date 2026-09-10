@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/readiness-report.schema.json",
+  "title": "Pyrax Readiness Report",
+  "type": "object",
+  "required": ["valid", "production_ready", "items"],
+  "properties": {
+    "valid": {"type": "boolean"},
+    "production_ready": {"type": "boolean"},
+    "validation_errors": {"type": "array", "items": {"type": "string"}},
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["area", "status", "reason"],
+        "properties": {
+          "area": {"type": "string"},
+          "status": {"enum": ["PASS", "PARTIAL", "BLOCKED", "NOT_STARTED"]},
+          "reason": {"type": "string"}
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
