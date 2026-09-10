@@ -1,0 +1,73 @@
+id: route-engineer-reference
+name: Route Engineer Reference
+version: 0.1.0
+description: Minimal non-customer reference Domain Pack for fleet decision intelligence.
+problem:
+  decision_to_improve: Anticipate route feasibility and downstream operational risk.
+  decision_owner: Dispatcher
+  allowed_actions: [review-assignment, review-route]
+sources:
+  - id: fleet-source
+    system: Fleet/route source placeholder
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: vehicle-driver-load-event
+    freshness: unknown
+entities:
+  - name: Vehicle
+    key: vehicle_id
+  - name: Driver
+    key: driver_id
+  - name: Load
+    key: load_id
+relationships: []
+ontology:
+  entity_types: [Vehicle, Driver, Load]
+  relationship_types: []
+  event_types: [PositionObserved, HoursObserved]
+  action_types: [ReviewAssignment]
+  constraints: [Do not infer HOS legality from missing source facts]
+operational_grain: driver-vehicle-load
+timestamps: [observed_at]
+states: [OBSERVED, STALE, AT_RISK]
+semantics:
+  certified: []
+  candidates: [eta-state]
+  unknowns: [hos-eligibility]
+signals:
+  - id: route-risk
+    rule: Evaluate explicit route constraints and observed state only.
+    evidence_required: [fleet-source]
+decisions:
+  - id: review-route-assignment
+    triggered_by: [route-risk]
+    recommendation: Review route/assignment before execution when evidence-backed constraints are breached.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, confidence]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: avoided-route-exception
+    success_condition: Fewer evidence-backed route exceptions after reviewed decisions.
+guardrails:
+  - UNKNOWN must not be converted to zero
+  - Scenario output must not mutate canonical state
+maturity:
+  target: P4_PREDICTIVE_OPERATIONS
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: hybrid
+ux:
+  primary_user: Dispatcher
+  primary_question: Which route or assignment needs attention and why?
+  primary_action: Review assignment
