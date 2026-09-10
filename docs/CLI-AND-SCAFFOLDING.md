@@ -1,6 +1,6 @@
 # Pyrax CLI and Scaffolding
 
-The CLI turns the framework from a documentation set into an executable starting point for new solutions.
+The CLI turns the framework from a documentation set into an executable discovery, validation and product-composition workflow.
 
 ## Install for development
 
@@ -8,63 +8,129 @@ The CLI turns the framework from a documentation set into an executable starting
 python -m pip install -e ".[dev]"
 ```
 
-## Validate
-
-Validate a Domain Pack against the canonical schema:
+## Discovery
 
 ```bash
-pyrax validate domain-packs/my-domain/domain-pack.yaml
+pyrax bootstrap "Organization Name"
 ```
 
-Exit code `0` means structurally valid. Exit code `1` means schema errors were found.
+This creates an intentionally incomplete discovery workspace. Generated drafts are not certified facts.
 
-## Assess
-
-Assess solution maturity:
+## Domain Pack validation and readiness
 
 ```bash
-pyrax assess domain-packs/my-domain/domain-pack.yaml
+pyrax validate domain-pack.yaml
+pyrax assess domain-pack.yaml
+pyrax maturity domain-pack.yaml
 ```
 
-The command returns a machine-readable JSON report. Exit code `0` is reserved for full production readiness; exit code `2` means the Domain Pack is valid/useful but one or more readiness gates are not complete.
+- `validate` checks Domain Pack structure/cross-references.
+- `assess` evaluates production-readiness gates.
+- `maturity` reports intelligence maturity P0-P5 independently of release readiness.
 
-## Scaffold
+## V0.5 catalogs
 
-Generate a new solution skeleton:
+Inspect reusable starting points and mechanics:
+
+```bash
+pyrax profiles
+pyrax profiles fleet-intelligence
+pyrax catalog blocks
+pyrax catalog adapters
+pyrax catalog ui
+```
+
+Profiles and catalogs are reusable hypotheses. They never certify business semantics.
+
+## Solution Manifest
+
+Validate and materialize a composition:
+
+```bash
+pyrax manifest solution-manifest.yaml
+```
+
+The manifest selects a Solution Profile and may override blocks, adapters, UI components, maturity target and technology profile.
+
+The manifest does not replace the Domain Pack:
+
+- Domain Pack = domain meaning and truth contracts.
+- Solution Manifest = selected reusable Pyrax composition.
+
+## Domain Pack composition
+
+A reusable base can be combined with explicit local overlays:
+
+```bash
+pyrax compose base-domain-pack.yaml \
+  --overlay organization-overlay.yaml \
+  --output domain-pack.yaml
+```
+
+Multiple `--overlay` arguments are applied in order.
+
+Mappings merge recursively. Lists and scalar values are replaced by the later overlay. Composition reduces duplication; it is not semantic certification.
+
+## Scaffold from a Domain Pack
 
 ```bash
 pyrax scaffold my-solution \
-  --domain-pack domain-packs/my-domain/domain-pack.yaml \
+  --domain-pack domain-pack.yaml \
   --destination ../
 ```
 
-The scaffolder validates the Domain Pack first and then generates:
+## Scaffold from a Solution Profile
+
+```bash
+pyrax scaffold fleet-ops \
+  --profile fleet-intelligence \
+  --domain-pack domain-pack.yaml \
+  --destination ../
+```
+
+## Scaffold from a Solution Manifest
+
+```bash
+pyrax scaffold fleet-ops \
+  --manifest solution-manifest.yaml \
+  --domain-pack domain-pack.yaml \
+  --destination ../
+```
+
+The generated project includes:
 
 - `README.md`;
-- `domain-pack.yaml` and `domain-pack.json`;
+- `solution-manifest.yaml`;
+- Domain Pack YAML/JSON when supplied;
 - Product Charter;
 - Source Map;
 - Signal Catalog;
 - Decision Catalog;
+- Composition document;
+- Evidence Contract;
 - QA Plan;
 - Golden Cases directory;
-- Python package skeleton;
+- domain/adapters/composition Python skeleton;
 - tests/config placeholders.
 
 Use `--allow-invalid` only during deliberate discovery work. Use `--force` only when intentionally replacing generated files.
 
-## Recommended workflow
+## Recommended V0.5 workflow
 
 ```text
-Discovery Worksheet
+Organization discovery
 → Domain Pack
-→ pyrax validate
-→ pyrax assess
-→ pyrax scaffold
+→ validate
+→ choose Solution Profile
+→ Solution Manifest
+→ compose organization overlays if useful
+→ assess + maturity
+→ scaffold
+→ bind blocks to certified domain semantics
 → implement vertical slice
-→ add Golden Cases
-→ add contract/reconciliation/integration tests
+→ Golden Cases
+→ contract/reconciliation/integration tests
 → reassess
 ```
 
-Scaffolding is not certification. Generated documents are starting artifacts and must be filled with domain evidence.
+Scaffolding and composition are not certification. Generated documents and reused mechanics must be bound to evidence from the target organization.
