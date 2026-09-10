@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import yaml
@@ -183,10 +184,50 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _input_path(args: argparse.Namespace) -> str | None:
+    for name in ("domain_pack", "manifest", "base", "schema"):
+        value = getattr(args, name, None)
+        if value:
+            return str(value)
+    overlays = getattr(args, "overlay", None)
+    if overlays:
+        return str(overlays[0])
+    return None
+
+
+def _yaml_error_reason(exc: yaml.YAMLError) -> str:
+    problem = getattr(exc, "problem", None)
+    if problem:
+        return str(problem).replace("\n", " ").strip()
+    return str(exc).splitlines()[0].strip() or exc.__class__.__name__
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
-    raise SystemExit(args.func(args))
+    try:
+        exit_code = args.func(args)
+    except FileNotFoundError as exc:
+        path = exc.filename or _input_path(args) or str(exc)
+        print(f"Error: file not found: {path}", file=sys.stderr)
+        raise SystemExit(1) from None
+    except yaml.YAMLError as exc:
+        path = _input_path(args)
+        location = f" in {path}" if path else ""
+        print(f"Error: invalid YAML{location}: {_yaml_error_reason(exc)}", file=sys.stderr)
+        raise SystemExit(1) from None
+    except IsADirectoryError as exc:
+        path = exc.filename or _input_path(args) or str(exc)
+        print(f"Error: expected a file but found a directory: {path}", file=sys.stderr)
+        raise SystemExit(1) from None
+    except PermissionError as exc:
+        path = exc.filename or _input_path(args) or str(exc)
+        print(f"Error: permission denied: {path}", file=sys.stderr)
+        raise SystemExit(1) from None
+    except ValueError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        raise SystemExit(1) from None
+    raise SystemExit(exit_code)
 
 
 if __name__ == "__main__":
