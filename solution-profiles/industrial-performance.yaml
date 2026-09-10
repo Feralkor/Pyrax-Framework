@@ -1,0 +1,19 @@
+id: industrial-performance
+description: OEE, flow, losses, bottlenecks and industrial performance.
+blocks:
+  - coverage
+  - bottleneck-detection
+  - baseline-deviation
+  - rate-of-change
+  - capacity-risk
+adapters:
+  - sql
+  - telemetry
+  - files
+ui_components:
+  - control-tower
+  - andon
+  - heatmap
+  - timeline
+  - evidence-drawer
+maturity_target: P3_ASSISTED_INTELLIGENCE
