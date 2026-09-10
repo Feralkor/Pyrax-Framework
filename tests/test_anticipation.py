@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from pyrax.runtime import aging, coverage, dead_reckoning, deficit, resolve_confidence
 from pyrax.models import ConfidenceLevel
+from pyrax.runtime import aging, coverage, dead_reckoning, deficit, resolve_confidence
 
 
 def test_coverage_and_deficit_preserve_unknown() -> None:
