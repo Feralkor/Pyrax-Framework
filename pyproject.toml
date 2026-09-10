@@ -10,6 +10,7 @@ requires-python = ">=3.11"
 dependencies = [
   "PyYAML>=6.0.2,<7",
   "jsonschema>=4.23,<5",
+  "mcp>=2,<3",
 ]
 
 [project.optional-dependencies]
@@ -20,6 +21,7 @@ dev = [
 
 [project.scripts]
 pyrax = "pyrax.cli:main"
+pyrax-mcp = "pyrax_mcp.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
