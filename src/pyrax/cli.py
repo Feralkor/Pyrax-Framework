@@ -2,20 +2,16 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 
 from pyrax.readiness import assess_domain_pack
 from pyrax.scaffold import scaffold_project
-from pyrax.validation import load_document, load_schema, validate_domain_pack
-
-
-def _schema_path() -> Path:
-    return Path(__file__).resolve().parents[2] / "schemas" / "domain-pack.schema.json"
+from pyrax.validation import load_canonical_schema, load_document, load_schema, validate_domain_pack
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
     pack = load_document(args.domain_pack)
-    errors = validate_domain_pack(pack, load_schema(args.schema or _schema_path()))
+    schema = load_schema(args.schema) if args.schema else load_canonical_schema()
+    errors = validate_domain_pack(pack, schema)
     if errors:
         print("INVALID")
         for error in errors:
@@ -40,7 +36,20 @@ def cmd_assess(args: argparse.Namespace) -> int:
 
 
 def cmd_scaffold(args: argparse.Namespace) -> int:
-    root = scaffold_project(args.name, args.destination, force=args.force)
+    pack = load_document(args.domain_pack) if args.domain_pack else None
+    if pack:
+        errors = validate_domain_pack(pack)
+        if errors and not args.allow_invalid:
+            print("Domain Pack is invalid; scaffold aborted.")
+            for error in errors:
+                print(f"- {error}")
+            return 1
+    root = scaffold_project(
+        args.name,
+        args.destination,
+        domain_pack=pack,
+        force=args.force,
+    )
     print(root)
     return 0
 
@@ -61,6 +70,8 @@ def build_parser() -> argparse.ArgumentParser:
     scaffold = sub.add_parser("scaffold", help="Generate a new Pyrax-based solution skeleton")
     scaffold.add_argument("name")
     scaffold.add_argument("--destination", default=".")
+    scaffold.add_argument("--domain-pack")
+    scaffold.add_argument("--allow-invalid", action="store_true")
     scaffold.add_argument("--force", action="store_true")
     scaffold.set_defaults(func=cmd_scaffold)
     return parser
