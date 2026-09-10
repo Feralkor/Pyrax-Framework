@@ -1,82 +1,112 @@
 # Pyrax Framework — MCP Specification
 
-Status: **DEFERRED / FUTURE INTERFACE**
+Status: **ACTIVE — INTERNAL AGENT INTERFACE v0.1**
 
-This document intentionally does not define current release work. Pyrax Framework v0.2 focuses on the standalone framework, CLI, runtime, schemas, templates, patterns, readiness and QA. The MCP will be designed in a later phase.
+MCP work was explicitly activated after the Pyrax Framework v0.5 productization baseline. The first implementation is intentionally internal, local and read-only. Commercial hosting, authentication, billing, multi-tenancy and direct source-system access remain out of scope until internal value and external willingness-to-pay are validated.
 
 ## Purpose
 
-The future Pyrax MCP is the intelligent interface for applying the framework consistently across new products and domains.
+Pyrax MCP exposes canonical framework capabilities to AI agents without duplicating Pyrax business logic.
 
-The MCP must expose framework knowledge, templates and validation workflows without becoming the source of business truth.
+The architectural rule is:
 
-## Current non-MCP foundation
+`Pyrax Core -> pyrax.api -> CLI / MCP / future adapters`
 
-The following capabilities already exist without MCP and should be reused rather than reimplemented:
+The MCP server is an adapter. It must never become an alternative source of validation, readiness, maturity or composition truth.
 
-- `pyrax validate` — Domain Pack schema and cross-reference validation;
-- `pyrax assess` — readiness assessment;
-- `pyrax scaffold` — product scaffolding;
-- machine-readable schemas under `schemas/`;
-- reusable patterns under `patterns/`;
-- runtime contracts under `src/pyrax/runtime/`.
+## v0.1 scope
 
-A future MCP should orchestrate these capabilities where practical instead of creating a second implementation.
+Transport: **stdio**.
 
-## Responsibilities
+Public tool surface:
 
-The MCP may later help agents and developers:
-- start a new solution discovery;
-- define a Domain Pack;
-- map sources and systems of record;
-- define entities, states and relationships;
-- register known and unknown semantics;
-- create data/query contracts;
-- define signals and decisions;
-- create evidence contracts;
-- generate Golden Cases;
-- assess readiness;
-- scaffold a new product structure;
-- inspect framework compliance.
+- `pyrax_validate_domain_pack`
+- `pyrax_assess_readiness`
+- `pyrax_assess_maturity`
+- `pyrax_validate_solution_manifest`
+- `pyrax_get_solution_profile`
+- `pyrax_get_catalog`
 
-## Candidate tools
+All v0.1 tools are read-only and operate on in-memory payloads or closed Pyrax catalogs. They do not access customer databases, credentials, external APIs or production systems.
 
-- `pyrax.start_discovery`
-- `pyrax.define_domain`
-- `pyrax.map_sources`
-- `pyrax.define_entity`
-- `pyrax.define_signal`
-- `pyrax.define_decision`
-- `pyrax.create_contract`
-- `pyrax.create_evidence_model`
-- `pyrax.create_golden_cases`
-- `pyrax.assess_readiness`
-- `pyrax.scaffold_product`
-- `pyrax.validate_domain_pack`
+## Public Python API
 
-These names are provisional until MCP design begins.
+`src/pyrax/api.py` is the public programmatic boundary reused by MCP and future adapters. Every response includes:
+
+- `framework_version`;
+- `api_version`;
+- operation-specific structured fields.
+
+Invalid Domain Packs and Solution Manifests are normal validation results, not protocol failures. Unexpected implementation errors must remain visible during development and testing.
+
+## MCP server
+
+`src/pyrax_mcp/server.py` uses the official MCP Python SDK v2 `MCPServer`. The default run mode is stdio.
+
+Install and run:
+
+```bash
+python -m pip install -e ".[dev]"
+pyrax-mcp
+```
+
+Equivalent module execution:
+
+```bash
+python -m pyrax_mcp.server
+```
 
 ## Guardrails
 
 The MCP must never:
+
 - fabricate missing source semantics;
-- certify a field because its name looks obvious;
-- convert unknown values to zero;
-- authorize destructive actions against production systems by default;
-- copy product-specific rules into another domain without explicit validation;
+- certify a field because its name appears obvious;
+- convert UNKNOWN, unavailable or null into zero/false;
+- mutate canonical operational state through a read-only tool;
+- access production systems in v0.1;
+- copy one organization's business semantics into another without explicit validation;
 - allow an LLM response to overwrite canonical facts;
-- weaken CLI/runtime validation merely to complete an agent task.
+- weaken Pyrax validation/readiness/maturity rules merely to complete an agent task.
 
-## Readiness assessment
+## Error semantics
 
-A future MCP should consume the canonical Readiness Model rather than maintain a conflicting readiness vocabulary. `docs/READINESS-MODEL.md` and `src/pyrax/readiness.py` are the current source of truth.
+Expected domain-validation failures are returned as structured data, for example `valid: false` plus `errors` or `validation_errors`.
 
-## Architecture
+MCP protocol/tool failures are reserved for malformed tool calls or unexpected implementation errors. This distinction lets an agent reason about an invalid artifact without confusing it with a server outage.
 
-The MCP should read framework assets from this repository and product/domain configuration from the target solution. It should return structured outputs that can be versioned in Git.
+## Testing
 
-The MCP is an orchestration and knowledge interface. Runtime operational decisions remain inside the product's certified application architecture.
+The v0.1 release gate requires:
 
-## Activation rule
+1. public API unit tests;
+2. exact six-tool MCP surface validation;
+3. read-only tool annotations;
+4. in-memory MCP client calls through the official SDK;
+5. structured validation failures without protocol errors;
+6. existing Pyrax regression suite passing;
+7. Ruff passing;
+8. package build succeeding.
 
-Do not implement the MCP until an explicit project decision reactivates this work. Ordinary framework evolution must not treat this specification as an unfinished v0.2 requirement.
+## Deferred work
+
+The following remain intentionally deferred:
+
+- `compose` and `scaffold` as MCP write/generation tools;
+- Streamable HTTP deployment;
+- OAuth/authentication;
+- multi-tenant isolation;
+- billing and quotas;
+- remote telemetry/usage metering;
+- customer source-system adapters exposed through MCP;
+- marketplace/registry distribution.
+
+Those capabilities require a separate validation gate and must not be pulled into v0.1 by convenience.
+
+## Commercial progression
+
+The intended sequence is:
+
+`Internal stdio v0.1 -> internal composition/HTTP experiment -> paid design partner -> repeatable external use -> commercial infrastructure`
+
+Do not build SaaS infrastructure before internal usefulness and external willingness-to-pay are demonstrated.
