@@ -31,6 +31,8 @@ jobs:
         run: pyrax validate examples/strategicos-hypothetical/domain-pack.yaml
       - name: Assess production-ready fixture
         run: pyrax assess tests/fixtures/minimal-domain-pack.yaml
+      - name: Assess Pyrax maturity fixture
+        run: pyrax maturity tests/fixtures/minimal-domain-pack.yaml
       - name: Scaffold implementation smoke test
         run: pyrax scaffold smoke-solution --domain-pack tests/fixtures/minimal-domain-pack.yaml --destination /tmp
 
