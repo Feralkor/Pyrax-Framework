@@ -3,7 +3,14 @@ from decimal import Decimal
 import pytest
 
 from pyrax.models import ConfidenceLevel
-from pyrax.runtime import DecisionEngine, QualityGate, ReconciliationGate, SignalEngine, TruthEngine, build_evidence
+from pyrax.runtime import (
+    DecisionEngine,
+    QualityGate,
+    ReconciliationGate,
+    SignalEngine,
+    TruthEngine,
+    build_evidence,
+)
 
 
 def test_unknown_fact_requires_reason() -> None:
