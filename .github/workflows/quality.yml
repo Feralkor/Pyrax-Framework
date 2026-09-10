@@ -33,8 +33,25 @@ jobs:
         run: pyrax assess tests/fixtures/minimal-domain-pack.yaml
       - name: Assess Pyrax maturity fixture
         run: pyrax maturity tests/fixtures/minimal-domain-pack.yaml
-      - name: Scaffold implementation smoke test
-        run: pyrax scaffold smoke-solution --domain-pack tests/fixtures/minimal-domain-pack.yaml --destination /tmp
+      - name: Inspect reusable profiles and catalogs
+        run: |
+          pyrax profiles fleet-intelligence
+          pyrax catalog blocks
+          pyrax catalog adapters
+          pyrax catalog ui
+      - name: Validate V0.5 reference manifests
+        run: |
+          pyrax manifest examples/v0.5-reference-compositions/route-engineer.solution.yaml
+          pyrax manifest examples/v0.5-reference-compositions/asset-radar.solution.yaml
+          pyrax manifest examples/v0.5-reference-compositions/predictive-maintenance.solution.yaml
+          pyrax manifest examples/v0.5-reference-compositions/oee-intelligence.solution.yaml
+          pyrax manifest examples/v0.5-reference-compositions/decision-engine.solution.yaml
+      - name: Compose Domain Pack overlay smoke test
+        run: pyrax compose tests/fixtures/minimal-domain-pack.yaml --overlay tests/fixtures/minimal-domain-pack.yaml --output /tmp/composed-domain-pack.yaml
+      - name: Preset scaffold smoke test
+        run: pyrax scaffold fleet-smoke --profile fleet-intelligence --domain-pack tests/fixtures/minimal-domain-pack.yaml --destination /tmp
+      - name: Manifest scaffold smoke test
+        run: pyrax scaffold decision-smoke --manifest examples/v0.5-reference-compositions/decision-engine.solution.yaml --domain-pack tests/fixtures/minimal-domain-pack.yaml --destination /tmp
 
   package:
     runs-on: ubuntu-latest
