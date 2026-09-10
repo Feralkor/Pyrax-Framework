@@ -4,6 +4,7 @@ import argparse
 import json
 
 from pyrax.bootstrap import bootstrap_discovery
+from pyrax.maturity import assess_domain_maturity
 from pyrax.readiness import assess_domain_pack
 from pyrax.scaffold import scaffold_project
 from pyrax.validation import load_canonical_schema, load_document, load_schema, validate_domain_pack
@@ -46,6 +47,28 @@ def cmd_assess(args: argparse.Namespace) -> int:
     }
     print(json.dumps(payload, ensure_ascii=False, indent=2))
     return 0 if report.production_ready else 2
+
+
+def cmd_maturity(args: argparse.Namespace) -> int:
+    pack = load_document(args.domain_pack)
+    errors = validate_domain_pack(pack)
+    if errors:
+        print(json.dumps({"valid": False, "validation_errors": errors}, ensure_ascii=False, indent=2))
+        return 1
+    assessment = assess_domain_maturity(pack)
+    print(
+        json.dumps(
+            {
+                "valid": True,
+                "level": assessment.level.name,
+                "level_value": int(assessment.level),
+                "reasons": list(assessment.reasons),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
+    return 0
 
 
 def cmd_bootstrap(args: argparse.Namespace) -> int:
@@ -97,9 +120,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema")
     validate.set_defaults(func=cmd_validate)
 
-    assess = sub.add_parser("assess", help="Assess framework readiness for a valid Domain Pack")
+    assess = sub.add_parser("assess", help="Assess production readiness for a valid Domain Pack")
     assess.add_argument("domain_pack")
     assess.set_defaults(func=cmd_assess)
+
+    maturity = sub.add_parser("maturity", help="Assess Pyrax maturity level P0-P5 for a valid Domain Pack")
+    maturity.add_argument("domain_pack")
+    maturity.set_defaults(func=cmd_maturity)
 
     scaffold = sub.add_parser("scaffold", help="Generate a new Pyrax-based solution skeleton")
     scaffold.add_argument("name")
