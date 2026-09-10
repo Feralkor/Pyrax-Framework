@@ -1,0 +1,71 @@
+id: predictive-maintenance-reference
+name: Predictive Maintenance Reference
+version: 0.1.0
+description: Minimal non-customer reference Domain Pack for condition and maintenance-priority intelligence.
+problem:
+  decision_to_improve: Prioritize inspection or intervention before condition degradation creates operational loss.
+  decision_owner: Maintenance Planner
+  allowed_actions: [inspect-asset, plan-intervention]
+sources:
+  - id: condition-source
+    system: Condition/telemetry source placeholder
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: asset-sensor-observation
+    freshness: unknown
+entities:
+  - name: Asset
+    key: asset_id
+  - name: ConditionObservation
+    key: observation_id
+relationships: []
+ontology:
+  entity_types: [Asset, ConditionObservation]
+  relationship_types: [AssetHasConditionObservation]
+  event_types: [ConditionObserved, MaintenancePerformed]
+  action_types: [InspectAsset, PlanIntervention]
+  constraints: [No failure prediction without sufficient calibrated evidence]
+operational_grain: asset-sensor
+timestamps: [observed_at]
+states: [NORMAL, DEVIATING, AT_RISK, UNKNOWN]
+semantics:
+  certified: []
+  candidates: [condition-baseline]
+  unknowns: [failure-horizon]
+signals:
+  - id: degradation-pressure
+    rule: Detect governed baseline deviation and rate-of-change only when sufficient observations exist.
+    evidence_required: [condition-source]
+decisions:
+  - id: review-maintenance-priority
+    triggered_by: [degradation-pressure]
+    recommendation: Review inspection or intervention priority using evidence-backed condition pressure.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, confidence]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: avoided-unplanned-loss
+    success_condition: Lower unplanned operational loss after evidence-backed maintenance prioritization.
+guardrails:
+  - UNKNOWN must not be converted to zero
+  - Do not label deterministic condition pressure as failure probability
+maturity:
+  target: P4_PREDICTIVE_OPERATIONS
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: hybrid
+ux:
+  primary_user: Maintenance Planner
+  primary_question: Which assets deserve inspection or intervention first and why?
+  primary_action: Review maintenance priority
