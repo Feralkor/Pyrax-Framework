@@ -1,0 +1,38 @@
+organization:
+  name: ""
+  type: ""
+  industry: ""
+  size: ""
+  geography: []
+  business_model: ""
+  products_services: []
+  customers_users: []
+
+operating_model:
+  critical_processes: []
+  decision_makers: []
+  service_levels: []
+  bottlenecks: []
+  recurrent_manual_checks: []
+  recurrent_exceptions: []
+
+technology:
+  systems: []
+  integrations: []
+  deployment_constraints: []
+  security_constraints: []
+  data_residency: []
+
+opportunities:
+  pains: []
+  late_decisions: []
+  reactive_processes: []
+  candidate_use_cases: []
+
+constraints:
+  regulatory: []
+  privacy: []
+  destructive_actions: []
+  human_approval_required: []
+
+unknowns: []
