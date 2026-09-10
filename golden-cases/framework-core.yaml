@@ -1,0 +1,31 @@
+version: 1
+cases:
+  - id: GC-UNKNOWN-001
+    principle: UNKNOWN_NEVER_ZERO
+    input:
+      available: null
+      demand: 10
+    expected:
+      coverage: null
+      deficit: null
+  - id: GC-COVERAGE-001
+    principle: SAME_POPULATION_DETERMINISTIC_CALCULATION
+    input:
+      available: 8
+      demand: 10
+    expected:
+      coverage: 0.8
+      deficit: 2
+  - id: GC-DECISION-ABSTAIN-001
+    principle: INSUFFICIENT_DATA_ABSTAINS
+    input:
+      confidence: INSUFFICIENT_DATA
+    expected:
+      recommendation: null
+  - id: GC-HUMAN-001
+    principle: HUMAN_APPROVAL_DEFAULT
+    input:
+      confidence: CERTIFIED
+      supported_signal: true
+    expected:
+      human_approval_required: true
