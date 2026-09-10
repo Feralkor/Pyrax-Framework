@@ -1,0 +1,51 @@
+id: demo-operations
+name: Demo Operations
+version: 0.1.0
+description: Minimal valid Pyrax Domain Pack.
+problem:
+  decision_to_improve: Prioritize operational attention.
+  decision_owner: Operations Lead
+  allowed_actions: [review, prioritize]
+sources:
+  - id: ops-db
+    system: Operational Database
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: entity + event
+    freshness: 5m
+entities:
+  - name: OperationalEntity
+    key: id
+relationships: []
+operational_grain: entity + business_window
+states: [NORMAL, ATTENTION, CRITICAL]
+timestamps: [observed_at]
+semantics:
+  certified: [entity_id, observed_at]
+  candidates: [capacity]
+  unknowns: []
+signals:
+  - id: attention-required
+    rule: observed_value > certified_threshold
+    evidence_required: [ops-db]
+decisions:
+  - id: prioritize-review
+    triggered_by: [attention-required]
+    recommendation: Review entity before next operational cycle.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: intervention_result
+    success_condition: Risk is reduced without violating a guardrail.
+guardrails:
+  - UNKNOWN must not be converted to zero
+ux:
+  primary_user: Operations Lead
+  primary_question: What needs attention now?
+  primary_action: Review evidence and decide.
