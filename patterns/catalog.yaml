@@ -1,0 +1,45 @@
+patterns:
+  aging:
+    inputs: [reference_timestamp, current_timestamp]
+    outputs: [elapsed_duration]
+    unknown_behavior: return_unknown_if_reference_missing
+    evidence_required: [reference_timestamp_source, cutoff]
+  coverage:
+    inputs: [available, demand]
+    outputs: [coverage_ratio]
+    assumptions: [demand_must_be_positive, same_population_and_grain]
+    unknown_behavior: return_unknown_if_available_or_demand_missing
+  deficit-propagation:
+    inputs: [available, dependent_demands]
+    outputs: [remaining_balance, deficit, affected_entities]
+    assumptions: [each_demand_counted_once, same_eligible_population]
+    prohibited_interpretations: [unknown_is_zero]
+  dead-reckoning:
+    inputs: [current_state, observed_rate, horizon]
+    outputs: [projected_state]
+    assumptions: [rate_semantics_known, horizon_bounded]
+    prohibited_interpretations: [projection_is_fact]
+  constraint-propagation:
+    inputs: [dependency_graph, constraints]
+    outputs: [affected_nodes, limiting_constraints]
+    assumptions: [relationships_are_validated]
+  baseline-deviation:
+    inputs: [observed, baseline]
+    outputs: [absolute_delta, relative_delta]
+    assumptions: [baseline_is_comparable]
+  rate-of-change:
+    inputs: [ordered_observations]
+    outputs: [rate, direction]
+    assumptions: [timestamps_are_comparable]
+  bottleneck-detection:
+    inputs: [flow_events, queue_or_wait_measure]
+    outputs: [candidate_bottleneck]
+    prohibited_interpretations: [candidate_is_proven_cause]
+  capacity-risk:
+    inputs: [known_or_expected_workload, available_capacity]
+    outputs: [capacity_gap, risk_state]
+    assumptions: [capacity_and_workload_share_unit_and_window]
+  outcome-feedback:
+    inputs: [recommendation, action, realized_outcome]
+    outputs: [outcome_delta, recommendation_result]
+    assumptions: [identity_and_time_window_preserved]
