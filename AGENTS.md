@@ -15,16 +15,20 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 5. `docs/DATA-ACQUISITION-PLAYBOOK.md`
 6. `docs/SOLUTION-ARCHETYPES.md`
 7. `docs/ARCHITECTURE.md`
-8. `docs/DEVELOPMENT-LIFECYCLE.md`
-9. `docs/DATA-TRUTH-MODEL.md`
-10. `docs/EVIDENCE-STANDARD.md`
-11. `docs/CONFIDENCE-MODEL.md`
-12. `docs/DECISION-MODEL.md`
-13. `docs/READINESS-MODEL.md`
-14. `docs/RUNTIME-CONTRACT.md`
-15. `docs/QA-STANDARD.md`
-16. `docs/CLI-AND-SCAFFOLDING.md`
-17. `docs/MCP-SPECIFICATION.md` only when working on the future MCP interface.
+8. `docs/OPERATIONAL-ONTOLOGY.md`
+9. `docs/DECISION-GRAPH.md`
+10. `docs/SCENARIO-ENGINE.md`
+11. `docs/MATURITY-MODEL.md`
+12. `docs/DEVELOPMENT-LIFECYCLE.md`
+13. `docs/DATA-TRUTH-MODEL.md`
+14. `docs/EVIDENCE-STANDARD.md`
+15. `docs/CONFIDENCE-MODEL.md`
+16. `docs/DECISION-MODEL.md`
+17. `docs/READINESS-MODEL.md`
+18. `docs/RUNTIME-CONTRACT.md`
+19. `docs/QA-STANDARD.md`
+20. `docs/CLI-AND-SCAFFOLDING.md`
+21. `docs/MCP-SPECIFICATION.md` only when working on the future MCP interface.
 
 ## Framework invariants
 
@@ -39,12 +43,15 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 - Domain-specific logic belongs in a Domain Pack or product implementation, not in the generic framework core.
 - Historical/reference products are examples, not executable dependencies.
 - A structurally valid Domain Pack is not automatically production-ready.
-- The generic runtime may implement mechanics; it must not encode warehouse, fleet, manufacturing, strategy or other domain semantics.
 - Organization type, industry and technology stack must never be hard-coded as framework assumptions.
+- Ontology objects must not be inferred merely from source tables.
+- Decision Graph edges must reference known nodes and remain acyclic inside one evaluation run.
+- Scenario projections must never mutate canonical state or be labeled as observed truth.
+- Maturity levels are cumulative and separate from production readiness.
 
 ## Canonical workflow for a new organization
 
-`bootstrap -> organization discovery -> decision discovery -> data discovery -> Domain Pack -> validate -> assess -> scaffold -> vertical slice -> Golden Cases -> contract/reconciliation tests -> integration -> deployment -> reassess`
+`bootstrap -> organization discovery -> decision discovery -> data discovery -> Domain Pack -> validate -> assess -> maturity -> scaffold -> vertical slice -> Golden Cases -> contract/reconciliation tests -> integration -> deployment -> reassess`
 
 When entering a new company or domain, start with:
 
@@ -58,31 +65,11 @@ Do not create a supposedly complete Domain Pack before discovering the organizat
 
 Do not start from UI or technology selection. Use:
 
-`Organization -> Problem -> Decision -> Source -> Semantics -> Contracts -> State -> Quality -> Reconciliation -> Evidence -> Signals -> Anticipation -> Decision Support -> Outcome -> UX`
+`Organization -> Problem -> Decision -> Source -> Semantics -> Contracts -> Ontology -> State -> Quality -> Reconciliation -> Evidence -> Signals -> Decision Graph -> Anticipation -> Scenario -> Decision Support -> Outcome -> UX`
 
 ## Reuse boundary
 
-Reuse:
-- process;
-- architecture boundaries;
-- schemas;
-- runtime mechanics;
-- patterns;
-- QA methods;
-- templates;
-- tooling.
-
-Fine-tune and revalidate:
-- business semantics;
-- source meaning;
-- entity relationships;
-- KPIs;
-- thresholds;
-- rules;
-- decisions;
-- workflows;
-- UX vocabulary;
-- deployment constraints.
+Reuse process, architecture boundaries, schemas, runtime mechanics, patterns, QA methods, templates and tooling. Fine-tune and revalidate business semantics, source meaning, ontology relationships, KPIs, thresholds, rules, decisions, workflows, UX vocabulary and deployment constraints.
 
 Never transplant another company's semantics merely because the data structure looks similar.
 
@@ -90,20 +77,28 @@ Never transplant another company's semantics merely because the data structure l
 
 - `pyrax bootstrap` creates an intentionally incomplete discovery workspace.
 - `pyrax validate` checks schema, structural integrity and cross-references.
-- `pyrax assess` reports design, semantic, QA and implementation maturity.
+- `pyrax assess` reports production-readiness gates.
+- `pyrax maturity` reports cumulative intelligence maturity P0-P5.
 - `pyrax scaffold` generates a starting project; generated files are not certified facts.
-- Never weaken validation/readiness just to make a project pass.
+- Never weaken validation/readiness/maturity criteria merely to make a project pass.
+
+## V0.4 contracts
+
+### Operational Ontology
+Generic mechanics may represent Entity, Relationship, Event and Action. Business identity and meaning remain domain-owned.
+
+### Decision Graph
+Use the graph for dependency/impact tracing. It does not prove causality by itself. Feedback across time belongs in Operational Memory, not in an evaluation-cycle loop.
+
+### Scenario Engine
+Every projection must preserve baseline and assumptions. A projected state is hypothetical until observed/reconciled later.
+
+### Maturity Model
+P0-P5 is descriptive guidance. Higher maturity is not automatically more valuable or safer. Production readiness remains governed independently by `docs/READINESS-MODEL.md`.
 
 ## Runtime contract
 
-Reusable runtime components must preserve:
-- explicit unknowns;
-- deterministic behavior;
-- immutable/evidence-carrying facts where practical;
-- granular confidence;
-- abstention when required facts/evidence are insufficient;
-- human approval as the default decision policy;
-- provider/domain isolation.
+Reusable runtime components must preserve explicit unknowns, deterministic behavior, Evidence, granular confidence, abstention when required facts/evidence are insufficient, human approval defaults and provider/domain isolation.
 
 ## Pattern rule
 
@@ -113,40 +108,17 @@ Patterns in `patterns/` are composable mechanics. Before production use, a produ
 
 Changes to machine-readable contracts must be backward-compatible or explicitly versioned as breaking changes. The packaged canonical schema under `src/pyrax/resources/` must stay synchronized with the root schema used by repository tooling/tests.
 
-## Definition of ready to implement
-
-A product should have at least:
-- organization/problem context;
-- decision owner;
-- system(s) of record;
-- domain entities and operational grain;
-- source map;
-- known/candidate/unknown semantics;
-- first signal and decision-support use case;
-- evidence requirements;
-- guardrails;
-- initial Golden Cases.
-
-This is implementation readiness, not production certification.
-
 ## Definition of production-ready
 
 Follow `docs/READINESS-MODEL.md`. Full production readiness requires all assessed gates to be `PASS`; do not reinterpret `PARTIAL`, `BLOCKED` or `NOT_STARTED` as success.
 
 ## Definition of done for framework changes
 
-A framework or template change is done when it:
-- remains domain- and industry-agnostic;
-- preserves or versions contracts explicitly;
-- includes examples where ambiguity is likely;
-- is testable/machine-validatable when practical;
-- does not weaken provenance, confidence, evidence or abstention requirements;
-- keeps CLI, schemas, templates and documentation coherent;
-- passes framework CI.
+A framework or template change is done when it remains domain- and industry-agnostic, preserves/version contracts explicitly, includes examples where ambiguity is likely, is testable when practical, does not weaken provenance/confidence/evidence/abstention, keeps CLI/schemas/templates/docs coherent and passes framework CI.
 
 ## MCP boundary
 
-The MCP implementation is intentionally deferred. Do not build an MCP server as part of ordinary framework/runtime work. `docs/MCP-SPECIFICATION.md` is a future integration contract only.
+The MCP implementation is intentionally deferred. `docs/MCP-SPECIFICATION.md` is a future integration contract only.
 
 ## North Star
 
