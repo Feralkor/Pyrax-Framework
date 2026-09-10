@@ -1,0 +1,32 @@
+profile: fleet-intelligence
+description: Minimal Pyrax composition inspired by Route Engineer. This is a reference pattern, not a copy of the original product.
+blocks:
+  - dead-reckoning
+  - constraint-propagation
+  - capacity-risk
+  - rate-of-change
+  - outcome-feedback
+adapters:
+  - rest-api
+  - telemetry
+  - sql
+ui_components:
+  - control-tower
+  - object-360
+  - timeline
+  - scenario-panel
+  - decision-card
+  - evidence-drawer
+maturity_target: P4_PREDICTIVE_OPERATIONS
+technology_profile: hybrid
+overrides:
+  domain_examples:
+    - driver
+    - vehicle
+    - load
+    - route
+    - hos-state
+  candidate_decisions:
+    - assignment feasibility
+    - ETA risk
+    - downstream capacity impact
