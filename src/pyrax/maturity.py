@@ -50,6 +50,7 @@ def capabilities_from_domain_pack(pack: dict) -> dict[str, bool]:
     implementation = (
         pack.get("implementation", {}) if isinstance(pack.get("implementation"), dict) else {}
     )
+    qa = pack.get("qa", {}) if isinstance(pack.get("qa"), dict) else {}
     approval = pack.get("approval_policy", {}) if isinstance(pack.get("approval_policy"), dict) else {}
 
     unknowns = semantics.get("unknowns", []) or []
@@ -63,7 +64,7 @@ def capabilities_from_domain_pack(pack: dict) -> dict[str, bool]:
         "evidence": bool(evidence.get("required")) and bool(evidence.get("fields")),
         "state": bool(pack.get("states")) or bool(implementation.get("runtime")),
         "quality": bool(implementation.get("quality", implementation.get("runtime", False))),
-        "reconciliation": bool(implementation.get("reconciliation_tests")),
+        "reconciliation": bool(qa.get("reconciliation_tests")),
         "signals": bool(pack.get("signals")),
         "decisions": bool(pack.get("decisions")),
         "human_approval": approval.get("mode") in {"HUMAN_ASSISTED", "HUMAN_APPROVED"},
