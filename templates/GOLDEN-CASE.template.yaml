@@ -1,0 +1,18 @@
+golden_case:
+  id: GC-001
+  name: Replace Me
+  scenario: ""
+  status: DRAFT
+
+inputs: []
+unknowns: []
+
+expected:
+  signal: null
+  recommendation: null
+  confidence: null
+  evidence: []
+
+prohibited_outcomes: []
+
+notes: ""
