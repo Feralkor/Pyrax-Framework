@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyrax-framework"
-version = "0.4.0"
-description = "Deterministic-first framework and universal recipe for evidence-driven operational intelligence systems"
+version = "0.5.0"
+description = "Deterministic-first framework for composing evidence-driven operational intelligence products"
 requires-python = ">=3.11"
 dependencies = [
   "PyYAML>=6.0.2,<7",
