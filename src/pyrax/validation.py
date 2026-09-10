@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from importlib.resources import files
 from pathlib import Path
 
 import yaml
@@ -23,8 +24,13 @@ def load_schema(schema_path: str | Path) -> dict:
     return json.loads(Path(schema_path).read_text(encoding="utf-8"))
 
 
-def validate_domain_pack(pack: dict, schema: dict) -> list[str]:
-    validator = Draft202012Validator(schema)
+def load_canonical_schema() -> dict:
+    resource = files("pyrax").joinpath("resources/domain-pack.schema.json")
+    return json.loads(resource.read_text(encoding="utf-8"))
+
+
+def validate_domain_pack(pack: dict, schema: dict | None = None) -> list[str]:
+    validator = Draft202012Validator(schema or load_canonical_schema())
     errors = sorted(validator.iter_errors(pack), key=lambda error: list(error.path))
     rendered: list[str] = []
     for error in errors:
