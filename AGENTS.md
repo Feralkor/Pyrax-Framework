@@ -31,7 +31,8 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 21. `docs/RUNTIME-CONTRACT.md`
 22. `docs/QA-STANDARD.md`
 23. `docs/CLI-AND-SCAFFOLDING.md`
-24. `docs/MCP-SPECIFICATION.md` only when working on the future MCP interface.
+24. `docs/MCP-SPECIFICATION.md`
+25. `docs/MCP-INTERNAL.md` when working on the internal agent interface.
 
 ## Framework invariants
 
@@ -121,6 +122,33 @@ Never transplant another company's semantics merely because the data structure l
 - `pyrax scaffold` generates a starting project from Domain Pack/profile/manifest; generated files are not certified facts.
 - Never weaken validation/readiness/maturity or composition checks merely to make a project pass.
 
+## Public API contract
+
+`src/pyrax/api.py` is the canonical programmatic boundary for agent/protocol adapters.
+
+- CLI and MCP may format or transport results, but must not reimplement Pyrax domain validation/readiness/maturity logic.
+- Public API results must carry `framework_version` and `api_version`.
+- Expected validation failures are structured results, not unexpected exceptions.
+- Backward-incompatible public API changes require an explicit API-version decision.
+
+## MCP v0.1 boundary
+
+The MCP implementation is active as an **Internal Agent Interface** under `src/pyrax_mcp/`.
+
+V0.1 requirements:
+
+- official MCP Python SDK v2;
+- stdio transport only;
+- exactly six public read-only tools unless the v0.1 contract is explicitly revised;
+- tools call `pyrax.api`; they do not invoke CLI subprocesses or parse stdout;
+- no direct Oracle/WMS/database/API/telemetry access;
+- no file-generation/scaffold side effects;
+- no remote HTTP, OAuth, multi-tenancy, billing or marketplace work;
+- invalid artifacts return structured validation results;
+- unexpected implementation defects must remain visible in tests/development.
+
+Do not add write-capable MCP tools merely because equivalent CLI functions exist. Composition/scaffold and remote deployment belong to a later MCP validation gate.
+
 ## Runtime contract
 
 Reusable runtime components must preserve explicit unknowns, deterministic behavior, Evidence, granular confidence, abstention when required facts/evidence are insufficient, human approval defaults, scenario isolation and provider/domain isolation.
@@ -135,12 +163,8 @@ Follow `docs/READINESS-MODEL.md`. Full production readiness requires all assesse
 
 ## Definition of done for framework changes
 
-A framework/template/composition change is done when it remains domain- and industry-agnostic, preserves/version contracts explicitly, includes tests/examples where ambiguity is likely, does not weaken provenance/confidence/evidence/abstention, keeps CLI/schemas/templates/catalogs/docs coherent and passes framework CI.
-
-## MCP boundary
-
-The MCP implementation is intentionally deferred. `docs/MCP-SPECIFICATION.md` is a future integration contract only.
+A framework/template/composition/agent-interface change is done when it remains domain- and industry-agnostic, preserves/version contracts explicitly, includes tests/examples where ambiguity is likely, does not weaken provenance/confidence/evidence/abstention, keeps CLI/API/MCP/schemas/templates/catalogs/docs coherent and passes framework CI.
 
 ## North Star
 
-> Turn proven operational-intelligence engineering into reusable product composition, so each new company spends effort on domain truth and fine-tuning instead of rebuilding the foundation.
+> Turn proven operational-intelligence engineering into reusable product composition and agent-accessible contracts, so each new company spends effort on domain truth and fine-tuning instead of rebuilding the foundation.
