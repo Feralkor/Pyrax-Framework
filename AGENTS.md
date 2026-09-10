@@ -14,10 +14,13 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 4. `docs/DEVELOPMENT-LIFECYCLE.md`
 5. `docs/DATA-TRUTH-MODEL.md`
 6. `docs/EVIDENCE-STANDARD.md`
-7. `docs/DECISION-MODEL.md`
-8. `docs/CONFIDENCE-MODEL.md`
-9. `docs/QA-STANDARD.md`
-10. `docs/MCP-SPECIFICATION.md` when altering agent/MCP behavior.
+7. `docs/CONFIDENCE-MODEL.md`
+8. `docs/DECISION-MODEL.md`
+9. `docs/READINESS-MODEL.md`
+10. `docs/RUNTIME-CONTRACT.md`
+11. `docs/QA-STANDARD.md`
+12. `docs/CLI-AND-SCAFFOLDING.md`
+13. `docs/MCP-SPECIFICATION.md` only when working on the future MCP interface.
 
 ## Framework invariants
 
@@ -30,43 +33,80 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 - Evidence must accompany decision-support outputs.
 - Critical operational actions remain human-approved unless a product explicitly defines a separately certified automation policy.
 - Domain-specific logic belongs in a Domain Pack or product implementation, not in the generic framework core.
-- Historical reference implementations are examples, not executable product dependencies.
+- Historical/reference products are examples, not executable dependencies.
+- A structurally valid Domain Pack is not automatically production-ready.
+- The generic runtime may implement mechanics; it must not encode warehouse, fleet, manufacturing, strategy or other domain semantics.
 
-## New product rule
+## Canonical workflow for a new product
 
-Do not start from UI. Start from:
+`Discovery -> Domain Pack -> validate -> assess -> scaffold -> vertical slice -> Golden Cases -> contract/reconciliation tests -> integration -> deployment -> reassess`
 
-`Problem -> Decision -> Source -> Semantics -> Contracts -> State -> Quality -> Evidence -> Signals -> Anticipation -> Decision Support -> Outcome -> UX`
+Do not start from UI. The reasoning order is:
 
-## Reuse rule
+`Problem -> Decision -> Source -> Semantics -> Contracts -> State -> Quality -> Reconciliation -> Evidence -> Signals -> Anticipation -> Decision Support -> Outcome -> UX`
 
-Reuse framework patterns and contracts. Do not copy product-specific assumptions across domains without explicit semantic validation.
+## CLI contract
 
-## Definition of ready
+- `pyrax validate` checks schema/structural validity.
+- `pyrax assess` reports design, semantic, QA and implementation maturity.
+- `pyrax scaffold` generates a starting project; generated files are not certified facts.
+- Never weaken validation/readiness just to make a project pass.
 
-A product is ready to implement only when it has at least:
+## Runtime contract
 
-- problem statement;
-- decision owner;
+Reusable runtime components must preserve:
+
+- explicit unknowns;
+- deterministic behavior;
+- immutable/evidence-carrying facts where practical;
+- granular confidence;
+- abstention when required facts are insufficient;
+- human approval as the default decision policy;
+- provider/domain isolation.
+
+## Pattern rule
+
+Patterns in `patterns/` are composable mechanics. Before production use, a product must define the pattern's domain inputs, semantic assumptions, evidence requirements, UNKNOWN behavior and prohibited interpretations.
+
+## Schema rule
+
+Changes to machine-readable contracts must be backward-compatible or explicitly versioned as breaking changes. The packaged canonical schema under `src/pyrax/resources/` must stay synchronized with the root schema used by repository tooling/tests.
+
+## Definition of ready to implement
+
+A product should have at least:
+
+- problem and decision owner;
 - system(s) of record;
-- domain entities;
-- operational grain;
+- domain entities and operational grain;
 - source map;
-- known/unknown semantics;
-- first decision-support use case;
+- known/candidate/unknown semantics;
+- first signal and decision-support use case;
 - evidence requirements;
 - guardrails;
-- Golden Cases.
+- initial Golden Cases.
 
-## Definition of done
+This is implementation readiness, not production certification.
+
+## Definition of production-ready
+
+Follow `docs/READINESS-MODEL.md`. Full production readiness requires all assessed gates to be `PASS`; do not reinterpret `PARTIAL`, `BLOCKED` or `NOT_STARTED` as success.
+
+## Definition of done for framework changes
 
 A framework or template change is done when it:
 
 - remains domain-agnostic;
-- preserves backward-compatible schemas or versions breaking changes explicitly;
+- preserves or versions contracts explicitly;
 - includes examples where ambiguity is likely;
-- is testable or machine-validatable when practical;
-- does not weaken provenance, confidence or evidence requirements.
+- is testable/machine-validatable when practical;
+- does not weaken provenance, confidence, evidence or abstention requirements;
+- keeps CLI, schemas, templates and documentation coherent;
+- passes framework CI.
+
+## MCP boundary
+
+The MCP implementation is intentionally deferred. Do not build an MCP server as part of ordinary framework/runtime work. `docs/MCP-SPECIFICATION.md` is a future integration contract only.
 
 ## North Star
 
