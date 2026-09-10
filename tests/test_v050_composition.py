@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 from pyrax.catalogs import SOLUTION_PROFILES, get_solution_profile
-from pyrax.composition import compose_domain_pack, materialize_solution_manifest, validate_solution_manifest
+from pyrax.composition import (
+    compose_domain_pack,
+    materialize_solution_manifest,
+    validate_solution_manifest,
+)
 from pyrax.scaffold import scaffold_project
 
 
