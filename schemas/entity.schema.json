@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/entity.schema.json",
+  "title": "Pyrax Entity",
+  "type": "object",
+  "required": ["name", "key"],
+  "properties": {
+    "name": {"type": "string", "minLength": 1},
+    "key": {"type": "string", "minLength": 1},
+    "attributes": {"type": "array", "items": {"type": "string"}},
+    "relationships": {"type": "array", "items": {"type": "string"}},
+    "source": {"type": ["string", "null"]},
+    "grain": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
