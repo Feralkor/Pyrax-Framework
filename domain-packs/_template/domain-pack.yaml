@@ -1,0 +1,59 @@
+domain_pack:
+  id: replace-me
+  name: Replace Me
+  version: 0.1.0
+  status: DRAFT
+
+problem:
+  statement: ""
+  decision_owner: ""
+  decision_to_improve: ""
+  allowed_actions: []
+
+systems_of_record: []
+
+entities: []
+
+relationships: []
+
+operational_grain: ""
+
+states: []
+
+time_fields: []
+
+semantics:
+  certified: []
+  candidate: []
+  unknown: []
+
+signals: []
+
+decisions: []
+
+confidence:
+  vocabulary:
+    - CERTIFIED
+    - ASSISTED
+    - INSUFFICIENT_DATA
+
+approval_policy: HUMAN_ASSISTED
+
+evidence:
+  required: true
+  fields:
+    - source
+    - cutoff
+    - rule_version
+    - quality_state
+    - confidence
+
+outcomes: []
+
+guardrails: []
+
+ux:
+  primary_user: ""
+  primary_question: ""
+  primary_action: ""
+  vocabulary: {}
