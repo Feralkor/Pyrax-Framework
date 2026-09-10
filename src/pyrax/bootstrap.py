@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-
 DISCOVERY_FILES = {
     "organization-profile.yaml": """organization:\n  name: {name}\n  type: \"\"\n  industry: \"\"\n  size: \"\"\n  geography: []\n  business_model: \"\"\n  products_services: []\n  customers_users: []\n\noperating_model:\n  critical_processes: []\n  decision_makers: []\n  service_levels: []\n  bottlenecks: []\n  recurrent_manual_checks: []\n  recurrent_exceptions: []\n\ntechnology:\n  systems: []\n  integrations: []\n  deployment_constraints: []\n  security_constraints: []\n  data_residency: []\n\nopportunities:\n  pains: []\n  late_decisions: []\n  reactive_processes: []\n  candidate_use_cases: []\n\nconstraints:\n  regulatory: []\n  privacy: []\n  destructive_actions: []\n  human_approval_required: []\n\nunknowns: []\n""",
     "DISCOVERY-WORKSHEET.md": """# Discovery Worksheet — {name}\n\n## Business\n- Business model:\n- Customers/users:\n- Critical value streams:\n\n## Operations\n- Critical processes:\n- Queues/handoffs:\n- Bottlenecks/rework:\n- Recurrent exceptions:\n\n## Decisions\n- Which decision should happen earlier?\n- Who owns it?\n- What action is available?\n- What is the cost of delay/error?\n\n## Data\n- Systems of Record:\n- Files/APIs/events:\n- Semantic unknowns:\n\n## Technology\n- Deployment constraints:\n- Security constraints:\n- Integration mechanisms:\n\n## Governance\n- Human approval boundaries:\n- Regulatory/privacy constraints:\n- Audit requirements:\n\n## Candidate first vertical slice\n- TBD\n""",
