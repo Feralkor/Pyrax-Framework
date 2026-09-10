@@ -1,7 +1,7 @@
 id: demo-operations
 name: Demo Operations
 version: 0.1.0
-description: Minimal valid Pyrax Domain Pack.
+description: Minimal production-ready Pyrax Domain Pack used only for framework tests.
 problem:
   decision_to_improve: Prioritize operational attention.
   decision_owner: Operations Lead
@@ -21,8 +21,8 @@ operational_grain: entity + business_window
 states: [NORMAL, ATTENTION, CRITICAL]
 timestamps: [observed_at]
 semantics:
-  certified: [entity_id, observed_at]
-  candidates: [capacity]
+  certified: [entity_id, observed_at, capacity]
+  candidates: []
   unknowns: []
 signals:
   - id: attention-required
@@ -45,6 +45,14 @@ outcomes:
     success_condition: Risk is reduced without violating a guardrail.
 guardrails:
   - UNKNOWN must not be converted to zero
+qa:
+  golden_cases: 2
+  contract_tests: true
+  reconciliation_tests: true
+implementation:
+  runtime: true
+  integration_tests: true
+  deployment: true
 ux:
   primary_user: Operations Lead
   primary_question: What needs attention now?
