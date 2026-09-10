@@ -23,8 +23,20 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 def cmd_assess(args: argparse.Namespace) -> int:
     pack = load_document(args.domain_pack)
+    errors = validate_domain_pack(pack)
+    if errors:
+        payload = {
+            "valid": False,
+            "production_ready": False,
+            "validation_errors": errors,
+            "items": [],
+        }
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 1
+
     report = assess_domain_pack(pack)
     payload = {
+        "valid": True,
         "production_ready": report.production_ready,
         "items": [
             {"area": item.area, "status": item.status.value, "reason": item.reason}
@@ -58,12 +70,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pyrax", description="Pyrax Framework CLI")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    validate = sub.add_parser("validate", help="Validate a Domain Pack against the canonical schema")
+    validate = sub.add_parser("validate", help="Validate a Domain Pack against canonical contracts")
     validate.add_argument("domain_pack")
     validate.add_argument("--schema")
     validate.set_defaults(func=cmd_validate)
 
-    assess = sub.add_parser("assess", help="Assess framework readiness for a Domain Pack")
+    assess = sub.add_parser("assess", help="Assess framework readiness for a valid Domain Pack")
     assess.add_argument("domain_pack")
     assess.set_defaults(func=cmd_assess)
 
