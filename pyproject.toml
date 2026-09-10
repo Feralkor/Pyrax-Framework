@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrax-framework"
+version = "0.2.0"
+description = "Deterministic-first framework for evidence-driven operational intelligence systems"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML>=6.0.2,<7",
+  "jsonschema>=4.23,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+  "ruff>=0.8,<1",
+]
+
+[project.scripts]
+pyrax = "pyrax.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
