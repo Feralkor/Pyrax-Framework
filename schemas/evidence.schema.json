@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/evidence.schema.json",
+  "title": "Pyrax Evidence",
+  "type": "object",
+  "required": ["evidence_id", "subject", "sources", "quality_state", "confidence"],
+  "properties": {
+    "evidence_id": {"type": "string"},
+    "subject": {"type": "string"},
+    "sources": {"type": "array", "items": {"type": "string"}},
+    "period_or_cutoff": {"type": ["string", "null"]},
+    "snapshot_or_state_version": {"type": ["string", "null"]},
+    "rule_or_model_version": {"type": ["string", "null"]},
+    "inputs": {"type": "array"},
+    "unknown_inputs": {"type": "array"},
+    "quality_state": {"type": "string"},
+    "reconciliation_state": {"type": ["string", "null"]},
+    "confidence": {"enum": ["CERTIFIED", "ASSISTED", "INSUFFICIENT_DATA"]},
+    "explanation": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
