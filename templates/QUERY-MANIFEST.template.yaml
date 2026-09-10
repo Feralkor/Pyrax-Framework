@@ -1,0 +1,23 @@
+query_id: replace-query
+version: 0.1.0
+domain: replace-domain
+purpose: ""
+source_id: ""
+source_objects: []
+grain: ""
+business_key: []
+parameters: []
+expected_columns: []
+expected_types: {}
+nullability: []
+date_field: null
+timeout_seconds: 30
+max_probe_rows: 50
+access_mode: read-only
+reconciliation_strategy: ""
+certification_state: DISCOVERED
+lifecycle: DISCOVERY
+prohibited:
+  - DML
+  - DDL
+  - unbounded exploratory execution
