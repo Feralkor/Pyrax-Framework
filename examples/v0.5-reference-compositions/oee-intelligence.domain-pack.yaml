@@ -1,0 +1,71 @@
+id: oee-intelligence-reference
+name: OEE Intelligence Reference
+version: 0.1.0
+description: Minimal non-customer reference Domain Pack for industrial performance and loss intelligence.
+problem:
+  decision_to_improve: Identify operational loss and bottleneck pressure early enough for recovery action.
+  decision_owner: Production Leader
+  allowed_actions: [investigate-loss, review-capacity]
+sources:
+  - id: production-source
+    system: Production/telemetry source placeholder
+    authority: SYSTEM_OF_RECORD
+    access_mode: read-only
+    grain: machine-production-event
+    freshness: unknown
+entities:
+  - name: Machine
+    key: machine_id
+  - name: ProductionRun
+    key: run_id
+relationships: []
+ontology:
+  entity_types: [Machine, ProductionRun]
+  relationship_types: [MachineExecutesRun]
+  event_types: [ProductionObserved, DowntimeObserved, QualityObserved]
+  action_types: [InvestigateLoss]
+  constraints: [OEE factors require explicit population and time semantics]
+operational_grain: machine-production-run
+timestamps: [observed_at]
+states: [RUNNING, STOPPED, CONSTRAINED, UNKNOWN]
+semantics:
+  certified: []
+  candidates: [availability-factor, performance-factor, quality-factor]
+  unknowns: [certified-oee-population]
+signals:
+  - id: industrial-loss-pressure
+    rule: Detect loss or bottleneck pressure only from governed production observations and valid populations.
+    evidence_required: [production-source]
+decisions:
+  - id: investigate-industrial-loss
+    triggered_by: [industrial-loss-pressure]
+    recommendation: Prioritize investigation of the largest evidence-backed operational loss or bottleneck.
+    human_approval_required: true
+evidence:
+  required: true
+  fields: [source, grain, observed_at, rule_version, confidence]
+confidence:
+  vocabulary: [CERTIFIED, ASSISTED, INSUFFICIENT_DATA]
+approval_policy:
+  mode: HUMAN_ASSISTED
+outcomes:
+  - metric: recovered-operational-capacity
+    success_condition: Increased recovered capacity or reduced validated loss after intervention.
+guardrails:
+  - UNKNOWN must not be converted to zero
+  - OEE must not be calculated from mismatched populations or time semantics
+maturity:
+  target: P3_ASSISTED_INTELLIGENCE
+qa:
+  golden_cases: 0
+  contract_tests: false
+  reconciliation_tests: false
+implementation:
+  runtime: false
+  integration_tests: false
+  deployment: false
+  technology_profile: desktop-local
+ux:
+  primary_user: Production Leader
+  primary_question: Where is the largest validated operational loss or bottleneck?
+  primary_action: Investigate loss
