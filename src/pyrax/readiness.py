@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from .models import ReadinessItem, ReadinessReport, ReadinessStatus
 
-
 DESIGN_AREAS = {
     "problem": ("decision_to_improve", "decision_owner", "allowed_actions"),
     "sources": (),
