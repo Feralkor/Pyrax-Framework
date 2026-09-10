@@ -8,13 +8,23 @@ from pathlib import Path
 import yaml
 
 from pyrax.bootstrap import bootstrap_discovery
-from pyrax.catalogs import ADAPTER_CATALOG, BUILDING_BLOCKS, SOLUTION_PROFILES, UI_COMPONENTS, get_solution_profile
-from pyrax.composition import compose_domain_pack, load_solution_manifest, materialize_solution_manifest, validate_solution_manifest
+from pyrax.catalogs import (
+    ADAPTER_CATALOG,
+    BUILDING_BLOCKS,
+    SOLUTION_PROFILES,
+    UI_COMPONENTS,
+    get_solution_profile,
+)
+from pyrax.composition import (
+    compose_domain_pack,
+    load_solution_manifest,
+    materialize_solution_manifest,
+    validate_solution_manifest,
+)
 from pyrax.maturity import assess_domain_maturity
 from pyrax.readiness import assess_domain_pack
 from pyrax.scaffold import scaffold_project
 from pyrax.validation import load_canonical_schema, load_document, load_schema, validate_domain_pack
-
 
 EXPECTED_VALUE_ERROR_PREFIXES = (
     "Domain Pack must be a mapping/object",
