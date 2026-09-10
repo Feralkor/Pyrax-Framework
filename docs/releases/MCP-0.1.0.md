@@ -1,6 +1,6 @@
 # Pyrax MCP 0.1.0 — Internal Agent Interface
 
-Status: RELEASE CANDIDATE / INTERNAL VALIDATION
+Status: **TECHNICALLY VALIDATED / XPM PRODUCT VALIDATION PENDING**
 
 ## Objective
 
@@ -49,21 +49,32 @@ Not included:
 - marketplace/registry distribution;
 - Oracle/Senior WMS or other provider connections.
 
-## Release gates
+## Technical validation
 
-MCP 0.1.0 may be called internally validated only when:
+The framework quality workflow completed successfully on the v0.1 implementation baseline:
 
-1. Ruff passes;
-2. the complete Pyrax pytest suite passes;
-3. the six expected MCP tools are the exact public v0.1 tool surface;
-4. each tool advertises read-only and closed-world annotations;
-5. in-memory MCP calls return structured output;
-6. invalid artifacts return structured validation data instead of protocol failure;
-7. existing CLI/framework tests remain green;
-8. package build succeeds with the MCP dependency and console script.
+- Ruff passed;
+- the complete Pyrax pytest suite passed on Python 3.11 and 3.12;
+- the exact six-tool MCP public surface passed protocol tests;
+- read-only/closed-world annotations passed;
+- in-memory MCP calls returned structured output;
+- invalid artifacts returned structured validation data rather than protocol failures;
+- existing V0.5 CLI/composition smoke tests remained green;
+- package build succeeded with the MCP SDK dependency and `pyrax-mcp` console entry point.
+
+Technical validation proves implementation integrity, not product value.
 
 ## Product-validation gate
 
-Technical green CI is necessary but not sufficient for v0.2. Before expanding scope, run the internal XPM Golden Case and compare agent performance with and without MCP.
+Before expanding scope, run the internal XPM Golden Case and compare agent performance with and without MCP.
 
-Proceed only if native Pyrax tools materially reduce unsupported assumptions, manual corrections, or time-to-correct-assessment.
+Track at least:
+
+- time to correct assessment;
+- unsupported assumptions introduced by the agent;
+- Pyrax invariant violations;
+- manual corrections required;
+- usefulness of readiness/maturity outputs;
+- correct preservation of UNKNOWN, Evidence and abstention behavior.
+
+Proceed toward MCP v0.2 only if native Pyrax tools materially improve the agent workflow.
