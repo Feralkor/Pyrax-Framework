@@ -19,9 +19,20 @@ def test_minimal_domain_pack_is_ready() -> None:
     assert report.production_ready is True
 
 
-def test_unknown_semantics_prevent_full_readiness() -> None:
+def test_unknown_semantics_block_production_readiness() -> None:
     pack = load_document(FIXTURE)
     pack["semantics"]["unknowns"] = ["unvalidated_status"]
     report = assess_domain_pack(pack)
     assert report.production_ready is False
-    assert any(item.area == "semantic_certification" and item.status.value == "PARTIAL" for item in report.items)
+    assert any(
+        item.area == "semantic_certification" and item.status.value == "BLOCKED"
+        for item in report.items
+    )
+
+
+def test_missing_runtime_is_not_production_ready() -> None:
+    pack = load_document(FIXTURE)
+    pack["implementation"]["runtime"] = False
+    report = assess_domain_pack(pack)
+    assert report.production_ready is False
+    assert any(item.area == "runtime" and item.status.value == "BLOCKED" for item in report.items)
