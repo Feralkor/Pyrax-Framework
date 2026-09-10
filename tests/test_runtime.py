@@ -49,6 +49,13 @@ def test_insufficient_signal_abstains_from_recommendation() -> None:
     assert DecisionEngine.recommend(signal, decision_id="x", action="act") is None
 
 
+def test_decision_without_evidence_abstains() -> None:
+    fact = TruthEngine.fact("capacity_gap", 5, confidence=ConfidenceLevel.CERTIFIED)
+    signal = SignalEngine.evaluate("capacity-risk", (fact,), predicate=lambda _: True)
+    assert signal is not None
+    assert DecisionEngine.recommend(signal, decision_id="x", action="act") is None
+
+
 def test_quality_and_reconciliation_gates() -> None:
     quality = QualityGate([lambda record: record.get("value", 0) >= 0])
     assert quality.evaluate({"value": 1}) == (True, [])
