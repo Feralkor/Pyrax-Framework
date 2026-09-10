@@ -1,0 +1,21 @@
+id: replace-data-contract
+version: 0.1.0
+domain: replace-domain
+purpose: ""
+source_id: ""
+grain: ""
+business_key: []
+fields:
+  - name: field_name
+    type: string
+    nullable: false
+    semantic_status: UNKNOWN
+    meaning: ""
+parameters: []
+quality_rules: []
+reconciliation:
+  reference: ""
+  tolerance: null
+unknown_behavior: preserve_null
+lineage_required: true
+owner: ""
