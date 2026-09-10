@@ -55,9 +55,9 @@ def test_validate_non_mapping_yaml_reports_clean_error(
     assert "Traceback (most recent call last)" not in captured.err
 
 
-def test_unexpected_exception_is_not_swallowed(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_unexpected_value_error_is_not_swallowed(monkeypatch: pytest.MonkeyPatch) -> None:
     def raise_unexpected(_: object) -> int:
-        raise RuntimeError("unexpected bug")
+        raise ValueError("unexpected bug")
 
     parser = cli.build_parser()
     args = parser.parse_args(["profiles"])
@@ -69,5 +69,5 @@ def test_unexpected_exception_is_not_swallowed(monkeypatch: pytest.MonkeyPatch) 
 
     monkeypatch.setattr(cli, "build_parser", lambda: ParserStub())
 
-    with pytest.raises(RuntimeError, match="unexpected bug"):
+    with pytest.raises(ValueError, match="unexpected bug"):
         cli.main()
