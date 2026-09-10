@@ -1,0 +1,30 @@
+profile: decision-intelligence
+description: Minimal Pyrax composition inspired by a general Decision Engine. Reference pattern only.
+blocks:
+  - baseline-deviation
+  - rate-of-change
+  - constraint-propagation
+  - outcome-feedback
+adapters:
+  - sql
+  - rest-api
+  - files
+ui_components:
+  - decision-card
+  - scenario-panel
+  - evidence-drawer
+  - timeline
+  - object-360
+maturity_target: P4_PREDICTIVE_OPERATIONS
+technology_profile: web-api
+overrides:
+  domain_examples:
+    - decision-context
+    - signal
+    - constraint
+    - candidate-action
+    - outcome
+  candidate_decisions:
+    - prioritize action
+    - compare scenarios
+    - request human approval
