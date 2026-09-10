@@ -1,0 +1,40 @@
+profiles:
+  desktop-local:
+    description: Local-first operational desktop application.
+    suggested_stack:
+      ui: Electron + React + TypeScript
+      core: Python
+      database: PostgreSQL or SQLite depending on concurrency/volume
+      integration: provider adapters behind explicit gateways
+    invariants:
+      - credentials never reach renderer
+      - business rules stay outside UI components
+      - local deployment must support auditable logs and rollback
+  web-api:
+    description: Web application with API-oriented deployment.
+    suggested_stack:
+      ui: React + TypeScript
+      api: FastAPI or equivalent typed API
+      core: Python domain layer
+      database: PostgreSQL
+    invariants:
+      - domain independent from HTTP transport
+      - API contracts versioned
+  cloud:
+    description: Cloud-hosted operational intelligence service.
+    suggested_stack:
+      api: typed service boundary
+      database: managed PostgreSQL
+      jobs: scheduled/event workers
+    invariants:
+      - least privilege integrations
+      - tenant boundaries explicit
+      - observability mandatory
+  hybrid:
+    description: On-premise source access with cloud or remote management surface.
+    invariants:
+      - source credentials remain at approved boundary
+      - synchronization is explicit and observable
+      - offline/failure mode defined
+
+rule: Profiles are starting points, never mandatory architecture. Domain constraints and security determine the final stack.
