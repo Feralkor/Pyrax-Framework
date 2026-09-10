@@ -1,0 +1,30 @@
+profile: industrial-performance
+description: Minimal Pyrax composition inspired by OEE and industrial performance intelligence. Reference pattern only.
+blocks:
+  - coverage
+  - bottleneck-detection
+  - baseline-deviation
+  - rate-of-change
+  - capacity-risk
+adapters:
+  - telemetry
+  - sql
+  - files
+ui_components:
+  - control-tower
+  - andon
+  - heatmap
+  - timeline
+  - evidence-drawer
+maturity_target: P3_ASSISTED_INTELLIGENCE
+technology_profile: desktop-local
+overrides:
+  domain_examples:
+    - machine
+    - production-run
+    - downtime-event
+    - quality-event
+  candidate_decisions:
+    - loss prioritization
+    - bottleneck investigation
+    - capacity recovery action
