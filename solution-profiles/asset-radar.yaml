@@ -1,0 +1,17 @@
+id: asset-radar
+description: Last-known-state, telemetry reconciliation and asset visibility.
+blocks:
+  - dead-reckoning
+  - coverage
+  - baseline-deviation
+  - outcome-feedback
+adapters:
+  - telemetry
+  - rest-api
+  - sql
+ui_components:
+  - control-tower
+  - object-360
+  - timeline
+  - evidence-drawer
+maturity_target: P3_ASSISTED_INTELLIGENCE
