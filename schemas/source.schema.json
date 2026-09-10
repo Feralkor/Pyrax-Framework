@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pyrax.dev/schemas/source.schema.json",
+  "title": "Pyrax Source Contract",
+  "type": "object",
+  "required": ["id", "system", "authority", "access_mode", "grain"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "system": {"type": "string", "minLength": 1},
+    "authority": {"enum": ["SYSTEM_OF_RECORD", "REFERENCE", "DERIVED", "EXTERNAL"]},
+    "access_mode": {"type": "string", "minLength": 1},
+    "grain": {"type": "string", "minLength": 1},
+    "freshness": {"type": ["string", "null"]},
+    "owner": {"type": ["string", "null"]},
+    "credentials_boundary": {"type": ["string", "null"]},
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
