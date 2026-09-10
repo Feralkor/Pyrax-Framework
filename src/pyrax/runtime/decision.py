@@ -15,6 +15,8 @@ class DecisionEngine:
         if signal is None or signal.confidence == ConfidenceLevel.INSUFFICIENT_DATA:
             return None
         evidence = tuple(e for fact in signal.facts for e in fact.evidence)
+        if not evidence:
+            return None
         return Recommendation(
             decision_id=decision_id,
             action=action,
