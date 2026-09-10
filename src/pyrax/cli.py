@@ -16,6 +16,12 @@ from pyrax.scaffold import scaffold_project
 from pyrax.validation import load_canonical_schema, load_document, load_schema, validate_domain_pack
 
 
+EXPECTED_VALUE_ERROR_PREFIXES = (
+    "Domain Pack must be a mapping/object",
+    "Solution Manifest must be a mapping",
+)
+
+
 def cmd_validate(args: argparse.Namespace) -> int:
     pack = load_document(args.domain_pack)
     schema = load_schema(args.schema) if args.schema else load_canonical_schema()
@@ -202,6 +208,11 @@ def _yaml_error_reason(exc: yaml.YAMLError) -> str:
     return str(exc).splitlines()[0].strip() or exc.__class__.__name__
 
 
+def _is_expected_value_error(exc: ValueError) -> bool:
+    message = str(exc)
+    return any(message.startswith(prefix) for prefix in EXPECTED_VALUE_ERROR_PREFIXES)
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
@@ -225,6 +236,8 @@ def main() -> None:
         print(f"Error: permission denied: {path}", file=sys.stderr)
         raise SystemExit(1) from None
     except ValueError as exc:
+        if not _is_expected_value_error(exc):
+            raise
         print(f"Error: {exc}", file=sys.stderr)
         raise SystemExit(1) from None
     raise SystemExit(exit_code)
