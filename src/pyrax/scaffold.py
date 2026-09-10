@@ -9,7 +9,6 @@ import yaml
 from pyrax.catalogs import get_solution_profile
 from pyrax.composition import materialize_solution_manifest
 
-
 FILES = {
     "README.md": "# {name}\n\nGenerated from Pyrax Framework.\n\nSolution profile: `{solution_profile}`.\n\nStart with `domain-pack.yaml` and `solution-manifest.yaml`, then implement the smallest evidence-backed vertical slice.\n",
     "AGENTS.md": "# AGENTS.md — {name}\n\n## Rule\n\nPreserve domain truth, explicit UNKNOWN states, Evidence, granular confidence and human approval defaults.\n\n## Build order\n\n`Source -> Semantics -> Contract -> Quality -> Reconciliation -> State -> Signal -> Decision -> Evidence -> UX`\n\nDo not move product-specific semantics into the generic Pyrax runtime.\n",
