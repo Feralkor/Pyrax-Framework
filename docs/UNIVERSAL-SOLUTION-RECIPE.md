@@ -1,17 +1,17 @@
 # Pyrax Framework — Universal Solution Recipe
 
 Status: CANONICAL
-Version: 0.3
+Version: 0.5
 
 ## Purpose
 
 This is the reusable recipe for starting an operational intelligence solution in any organization: industry, services, logistics, manufacturing, startup, SaaS, finance, retail, healthcare, public sector or another domain.
 
-The framework does not assume a WMS, ERP, CRM, cloud provider, programming language, database or UI stack. It standardizes the reasoning and engineering sequence.
+The framework does not assume a WMS, ERP, CRM, cloud provider, programming language, database or UI stack. It standardizes the reasoning, engineering and product-composition sequence.
 
 ## Universal sequence
 
-`Organization Context -> Problem Discovery -> Decision Discovery -> Data Discovery -> Semantic Mapping -> Domain Pack -> Validation -> Readiness -> Scaffold -> Vertical Slice -> Evidence -> Decision Support -> Outcome -> Iteration`
+`Organization Context -> Problem Discovery -> Decision Discovery -> Data Discovery -> Semantic Mapping -> Domain Pack -> Validation -> Profile/Composition -> Readiness -> Scaffold -> Vertical Slice -> Evidence -> Decision Support -> Outcome -> Iteration`
 
 ## Phase 0 — Organization context
 
@@ -105,26 +105,69 @@ For every signal define:
 
 Output: Decision Catalog + Evidence Contract.
 
-## Phase 6 — Validation and readiness
+## Phase 6 — Validation
 
 Run:
 
 ```bash
 pyrax validate domain-pack.yaml
-pyrax assess domain-pack.yaml
 ```
 
 A valid model is not automatically production-ready.
 
-## Phase 7 — Scaffold
+## Phase 7 — Product composition
 
-Generate the implementation skeleton:
+Choose a reusable product shape only after the domain problem is understood.
+
+Inspect available pieces:
 
 ```bash
-pyrax scaffold my-solution --domain-pack domain-pack.yaml
+pyrax profiles
+pyrax catalog blocks
+pyrax catalog adapters
+pyrax catalog ui
 ```
 
-## Phase 8 — Smallest vertical slice
+Then either:
+- select a Solution Profile;
+- create a Solution Manifest;
+- compose an approved base Domain Pack with organization-specific overlays.
+
+Examples:
+
+```bash
+pyrax manifest solution-manifest.yaml
+pyrax compose base-domain-pack.yaml --overlay organization.yaml --output domain-pack.yaml
+```
+
+Composition reduces repeated engineering. It never certifies inherited business semantics.
+
+## Phase 8 — Readiness and maturity
+
+Run:
+
+```bash
+pyrax assess domain-pack.yaml
+pyrax maturity domain-pack.yaml
+```
+
+Readiness and intelligence maturity are separate concepts.
+
+## Phase 9 — Scaffold
+
+Generate the implementation skeleton from a Domain Pack plus optional profile/manifest:
+
+```bash
+pyrax scaffold my-solution --profile decision-intelligence --domain-pack domain-pack.yaml
+```
+
+or:
+
+```bash
+pyrax scaffold my-solution --manifest solution-manifest.yaml --domain-pack domain-pack.yaml
+```
+
+## Phase 10 — Smallest vertical slice
 
 Implement one complete chain:
 
@@ -132,7 +175,7 @@ Implement one complete chain:
 
 Do not expand horizontally before one vertical is demonstrably trustworthy.
 
-## Phase 9 — Outcome learning
+## Phase 11 — Outcome learning
 
 Capture:
 
@@ -146,4 +189,4 @@ Only then calibrate rules, thresholds, statistics or ML.
 
 ## Reuse boundary
 
-Reuse architecture, contracts, validation, runtime primitives, patterns and QA. Never reuse another company's domain semantics without validation.
+Reuse architecture, contracts, validation, runtime primitives, Solution Profiles, Building Blocks, adapter classes, UI composition contracts, patterns and QA. Never reuse another company's domain semantics without local validation.
