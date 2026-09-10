@@ -23,8 +23,10 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: python -m ruff check src tests
       - run: python -m pytest -q
-      - name: Validate canonical Domain Pack fixture
+      - name: Validate production-ready framework fixture
         run: pyrax validate tests/fixtures/minimal-domain-pack.yaml
+      - name: Validate hypothetical fine-tuning example
+        run: pyrax validate examples/strategicos-hypothetical/domain-pack.yaml
       - name: Assess production-ready fixture
         run: pyrax assess tests/fixtures/minimal-domain-pack.yaml
       - name: Scaffold smoke test
