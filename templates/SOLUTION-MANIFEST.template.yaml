@@ -1,0 +1,15 @@
+profile: decision-intelligence
+description: ""
+
+# Omit a list to inherit the profile defaults, or override it explicitly.
+blocks: []
+adapters: []
+ui_components: []
+
+maturity_target: P3_ASSISTED_INTELLIGENCE
+technology_profile: not-selected
+domain_pack: domain-pack.yaml
+
+overrides:
+  # Fine-tuning belongs here or in the Domain Pack, never inside generic Pyrax core.
+  notes: ""
