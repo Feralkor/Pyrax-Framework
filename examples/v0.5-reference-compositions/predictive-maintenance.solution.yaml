@@ -1,0 +1,29 @@
+profile: predictive-maintenance
+description: Minimal Pyrax composition inspired by predictive maintenance solutions. Reference pattern only.
+blocks:
+  - baseline-deviation
+  - rate-of-change
+  - capacity-risk
+  - outcome-feedback
+adapters:
+  - telemetry
+  - sql
+  - files
+ui_components:
+  - object-360
+  - timeline
+  - scenario-panel
+  - evidence-drawer
+  - decision-card
+maturity_target: P4_PREDICTIVE_OPERATIONS
+technology_profile: hybrid
+overrides:
+  domain_examples:
+    - asset
+    - sensor
+    - condition-signal
+    - maintenance-event
+  candidate_decisions:
+    - inspection priority
+    - intervention timing
+    - maintenance capacity allocation
