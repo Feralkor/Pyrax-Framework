@@ -3,9 +3,10 @@ from __future__ import annotations
 import json
 import os
 import time
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from pyrax import __version__
 from pyrax.api import API_VERSION
@@ -36,7 +37,12 @@ def _write_record(record: dict[str, Any]) -> None:
         handle.write("\n")
 
 
-def audited_call(tool_name: str, operation: Callable[..., dict[str, Any]], *args: Any, **kwargs: Any) -> dict[str, Any]:
+def audited_call(
+    tool_name: str,
+    operation: Callable[..., dict[str, Any]],
+    *args: Any,
+    **kwargs: Any,
+) -> dict[str, Any]:
     """Run one MCP operation and optionally append a metadata-only local audit record.
 
     Audit records intentionally exclude tool arguments, Domain Packs, manifests and full
