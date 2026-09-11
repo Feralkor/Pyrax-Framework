@@ -26,7 +26,7 @@ v0.3.0 establishes Pyrax Framework as a reusable, industry-agnostic recipe for s
 - Pattern Library;
 - Product/Source/Signal/Decision/Data Contract/Query Manifest/Evidence/Outcome/Golden Case templates;
 - machine-readable Domain Pack and Evidence schemas;
-- reference examples from XPM, Route Engineer and NeuroGear;
+- reference examples from Inteligência Operacional, Route Engineer and NeuroGear;
 - hypothetical Strategicos example demonstrating fine-tuning without fabricated certification;
 - automated tests, Golden Cases and GitHub Actions quality workflow.
 
