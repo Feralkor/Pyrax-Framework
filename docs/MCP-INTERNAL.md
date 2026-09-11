@@ -1,6 +1,6 @@
 # Pyrax MCP v0.1 — Internal Agent Interface
 
-Status: INTERNAL VALIDATION
+Status: TECHNICALLY VALIDATED / V0.1.1 ENGINEERING COMPLETE / BLINDED PRODUCT VALIDATION PENDING
 
 ## Goal
 
@@ -86,7 +86,23 @@ Delivered instrumentation:
 - optional metadata-only local MCP audit log;
 - public API/MCP contract snapshots;
 - vendor-neutral local stdio host examples;
+- experiment aggregation and GO/NO-GO gate;
+- complete eight-run blinded execution pack and result template;
 - CI enforcement that public reference material remains company-neutral.
+
+### Engineering closeout
+
+The v0.1.1 engineering phase is complete. No additional business tools, transports or deployment infrastructure should be added until the isolated blinded experiment is executed and the promotion gate passes.
+
+Canonical closeout:
+
+`docs/validation/MCP-0.1.1-ENGINEERING-CLOSEOUT.md`
+
+Blinded execution package:
+
+- `examples/validation/mcp-v0.1.1-blind-run-pack.yaml`;
+- `examples/validation/mcp-v0.1.1-run-template.yaml`;
+- `docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md`.
 
 ### Optional local audit
 
@@ -142,7 +158,7 @@ V0.1 tools only process user-supplied in-memory documents and framework-owned ca
 
 ## Exit criteria for v0.2
 
-Do not expand the MCP merely because v0.1 works technically. Move forward when internal use shows that native Pyrax tools materially improve an agent workflow.
+Do not expand the MCP merely because v0.1 works technically. Move forward only after the isolated blinded v0.1.1 product experiment passes the deterministic promotion gate and the empirical result is recorded.
 
 Candidate v0.2 capabilities are:
 
