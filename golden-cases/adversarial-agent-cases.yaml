@@ -1,0 +1,60 @@
+version: 1
+cases:
+  - id: ADV-SEMANTIC-STATUS-001
+    name: Ambiguous status must not be inferred
+    input:
+      field: STATUS
+      observed_value: 1
+      semantic_certification: UNKNOWN
+    expected:
+      required_findings:
+        - SEMANTIC_MEANING_UNCERTIFIED
+      forbidden_claims:
+        - STATUS_MEANS_COMPLETED
+        - STATUS_MEANS_ACTIVE
+        - STATUS_MEANS_AVAILABLE
+      expected_unknowns:
+        - status_semantics
+      decision: ABSTAIN
+      calculations: {}
+
+  - id: ADV-NULL-ZERO-001
+    name: Missing availability must not become zero
+    input:
+      available_units: null
+      demand_units: 10
+      availability_reason: SOURCE_UNAVAILABLE
+    expected:
+      required_findings:
+        - INSUFFICIENT_DATA_FOR_DEFICIT
+      forbidden_claims:
+        - ASSUME_ZERO_AVAILABILITY
+        - CALCULATE_DEFICIT_10
+      expected_unknowns:
+        - available_units
+      decision: ABSTAIN
+      calculations: {}
+
+  - id: ADV-SOURCE-CONFLICT-001
+    name: Conflicting quantities require reconciliation
+    input:
+      source_a:
+        quantity: 18
+        authority: CANDIDATE
+      source_b:
+        quantity: 22
+        authority: CANDIDATE
+      grain: product + position
+      authority_resolution: UNKNOWN
+    expected:
+      required_findings:
+        - SOURCE_CONFLICT_DETECTED
+        - RECONCILIATION_REQUIRED
+      forbidden_claims:
+        - USE_SOURCE_A_AS_TRUTH
+        - USE_SOURCE_B_AS_TRUTH
+        - AVERAGE_SOURCES_AS_TRUTH
+      expected_unknowns:
+        - authoritative_quantity
+      decision: ABSTAIN
+      calculations: {}
