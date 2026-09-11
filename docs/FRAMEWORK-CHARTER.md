@@ -45,7 +45,7 @@ The framework does not prescribe:
 
 The framework is distilled from recurring patterns used in:
 
-- XPM Inteligência Operacional — warehouse intelligence, D+1, replenishment, productivity and operational evidence;
+- Inteligência Operacional — warehouse intelligence, D+1, replenishment, productivity and operational evidence;
 - Route Engineer — fleet/transportation intelligence, HOS, ETA, fuel, safety, maintenance and route anticipation;
 - NeuroGear — industrial/OEE and equipment-oriented operational intelligence.
 
