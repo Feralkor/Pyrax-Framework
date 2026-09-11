@@ -1,0 +1,24 @@
+api_version: 0.1.0
+operations:
+  validate_domain_pack:
+    keys: [api_version, errors, framework_version, valid]
+  assess_readiness:
+    keys: [api_version, framework_version, items, production_ready, valid]
+  assess_maturity:
+    keys: [api_version, framework_version, level, level_value, reasons, valid]
+  validate_solution_manifest:
+    keys: [api_version, errors, framework_version, valid]
+  get_solution_profile_list:
+    keys: [api_version, found, framework_version, profiles]
+  get_solution_profile_item:
+    keys: [api_version, found, framework_version, profile, profile_id]
+  get_catalog:
+    keys: [api_version, found, framework_version, items, kind]
+mcp:
+  tools:
+    - pyrax_assess_maturity
+    - pyrax_assess_readiness
+    - pyrax_get_catalog
+    - pyrax_get_solution_profile
+    - pyrax_validate_domain_pack
+    - pyrax_validate_solution_manifest
