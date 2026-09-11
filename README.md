@@ -8,7 +8,7 @@ Pyrax reduces architecture, governance and engineering that would otherwise be r
 
 `Pyrax Framework + Organization Context + Domain Pack + Solution Profile + Building Blocks + Adapters + UI Composition = Operational Product`
 
-Reference patterns were distilled from XPM Inteligência Operacional, Route Engineer, NeuroGear and related portfolio products. They are examples, not runtime dependencies.
+Reference patterns were distilled from Inteligência Operacional, Route Engineer, NeuroGear and related portfolio products. They are examples, not runtime dependencies.
 
 ## Why Pyrax
 
@@ -93,7 +93,7 @@ Reusable adapter classes cover SQL, REST APIs, telemetry, files and event stream
 
 ## MCP v0.1 — Internal Agent Interface
 
-Pyrax now includes an intentionally narrow MCP interface for internal validation with AI agents.
+Pyrax includes an intentionally narrow MCP interface for internal validation with AI agents.
 
 Architecture:
 
@@ -119,6 +119,22 @@ pyrax-mcp
 ```
 
 The v0.1 MCP deliberately has no Oracle/WMS/database access, no scaffold/file-writing tool, no remote HTTP deployment, no OAuth, no billing and no multi-tenancy. See `docs/MCP-INTERNAL.md` and `docs/MCP-SPECIFICATION.md`.
+
+## MCP v0.1.1 — Validation Instrumentation
+
+The validation track measures whether native Pyrax tools materially improve agent behavior before any MCP v0.2 expansion.
+
+`src/pyrax/evaluation.py` implements a deterministic evaluation harness. Golden Cases declare normalized required findings, forbidden claims, expected UNKNOWNs, expected decisions and deterministic calculations. The harness scores structured agent observations without using an LLM as judge.
+
+The first product-validation case is:
+
+`golden-cases/inteligencia-operacional-d1.yaml`
+
+It uses synthetic, company-neutral operational data. The case requires the agent to detect a 35-unit D+1 deficit while abstaining from selecting replenishment origin, lot, FIFO or FEFO because those semantics remain UNKNOWN.
+
+Public reference and benchmark artifacts must remain company-neutral. Internal-origin cases are anonymized as **Inteligência Operacional** and use synthetic/minimized values before commit.
+
+See `docs/MCP-EVALUATION.md`.
 
 ## Fundamental rule
 
@@ -202,18 +218,18 @@ These are reusable composition examples, not certified customer Domain Packs.
 
 ## Repository structure
 
-- `src/pyrax/` — public API, CLI, composition, catalogs, runtime, readiness and maturity;
+- `src/pyrax/` — public API, CLI, evaluation, composition, catalogs, runtime, readiness and maturity;
 - `src/pyrax_mcp/` — MCP v0.1 internal agent adapter;
 - `solution-profiles/` — reusable product presets;
-- `docs/` — canonical recipe, architecture, productization and MCP contracts;
+- `docs/` — canonical recipe, architecture, productization, MCP and evaluation contracts;
 - `schemas/` — Domain Pack and Solution Manifest contracts;
 - `templates/` — discovery/product/engineering templates;
 - `domain-packs/` — domain customization template;
 - `patterns/` — analytical/decision mechanics;
 - `bootstrap/` — optional technology profiles;
 - `examples/` — reference patterns and V0.5 reference compositions;
-- `golden-cases/` — deterministic framework reference scenarios;
-- `tests/` — regression, public API, composition and MCP tests;
+- `golden-cases/` — deterministic framework and MCP evaluation scenarios;
+- `tests/` — regression, public API, composition, MCP and evaluation tests;
 - `.github/workflows/` — quality gates.
 
 ## Guardrails preserved
@@ -227,6 +243,7 @@ These are reusable composition examples, not certified customer Domain Packs.
 - Customer-specific semantics stay outside generic catalogs and runtime.
 - A valid composition is not automatically production-ready.
 - MCP v0.1 is read-only and cannot access external operational systems.
+- Public reference cases must not expose private company identity or proprietary operational data.
 
 ## Quality
 
@@ -234,7 +251,7 @@ These are reusable composition examples, not certified customer Domain Packs.
 make quality
 ```
 
-CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fixtures/examples, exercises bootstrap/readiness/maturity/composition/scaffolding/MCP behavior and builds the package.
+CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fixtures/examples, exercises bootstrap/readiness/maturity/composition/scaffolding/MCP/evaluation behavior and builds the package.
 
 ## Canonical reading
 
@@ -264,11 +281,12 @@ CI runs on Python 3.11 and 3.12, performs Ruff + pytest, validates canonical fix
 24. `docs/CLI-AND-SCAFFOLDING.md`
 25. `docs/MCP-SPECIFICATION.md`
 26. `docs/MCP-INTERNAL.md`
+27. `docs/MCP-EVALUATION.md`
 
 ## Status
 
 Framework line: **v0.5 — Productization & Composition**.
 
-Agent interface: **Pyrax MCP v0.1 — Internal Validation**.
+Agent interface: **Pyrax MCP v0.1 — technically validated**.
 
-Neither line should be called stable until its CI/release gates are green.
+Validation instrumentation: **Pyrax MCP v0.1.1 — active product-validation track**.
