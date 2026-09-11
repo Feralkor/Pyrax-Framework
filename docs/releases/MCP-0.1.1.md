@@ -1,6 +1,6 @@
 # Pyrax MCP 0.1.1 — Validation Instrumentation
 
-Status: **RELEASE CANDIDATE / PRODUCT EXPERIMENT PENDING**
+Status: **ENGINEERING COMPLETE / BLINDED PRODUCT VALIDATION PENDING**
 
 ## Objective
 
@@ -21,7 +21,11 @@ V0.1.1 does **not** add new business tools. The public MCP surface remains exact
 - exact MCP tool-surface snapshot;
 - vendor-neutral stdio host examples;
 - automated company-neutral public-reference guard;
-- documentation for baseline-vs-MCP product evaluation.
+- blinded baseline-vs-MCP validation protocol;
+- experiment aggregation and deterministic GO/NO-GO gate;
+- complete eight-run blind execution pack;
+- complete eight-run result template;
+- engineering closeout record.
 
 ## Evaluation contract
 
@@ -79,9 +83,19 @@ It does not capture tool arguments, Domain Packs, Solution Manifests or full res
 
 Backward-incompatible changes require an explicit API-version decision.
 
+## Engineering closeout
+
+The v0.1.1 engineering phase is complete and frozen. The latest finalized blinded-execution-package baseline passed the full GitHub Actions quality workflow before this closeout documentation alignment.
+
+Canonical closeout:
+
+`docs/validation/MCP-0.1.1-ENGINEERING-CLOSEOUT.md`
+
+No additional v0.1.1 MCP tools, transports or infrastructure should be introduced before the external blinded product experiment completes.
+
 ## Product experiment gate
 
-The next milestone is not MCP v0.2 implementation. It is a controlled comparison of the same synthetic/neutral operational cases under two conditions:
+The remaining milestone is a controlled comparison of the same synthetic/neutral operational cases under two conditions:
 
 1. agent without Pyrax MCP;
 2. the same class of agent with Pyrax MCP available.
@@ -98,12 +112,13 @@ Track:
 - manual corrections;
 - variance across compatible agent hosts/models.
 
-Only consider v0.2 if evidence shows that MCP-assisted runs materially improve reliability or workflow efficiency without weakening Pyrax invariants.
+Do not claim internal product validation and do not begin approved v0.2 implementation until the eight blinded runs are frozen, scored and the deterministic gate returns GO.
 
-## Candidate v0.2 scope after validation
+## Candidate v0.2 scope after GO
 
 - Domain Pack composition through MCP;
 - controlled scaffold generation;
+- explicit approval/side-effect boundaries;
 - internal Streamable HTTP transport.
 
 OAuth, billing, multi-tenancy, public marketplace distribution and operational-system connectivity remain outside this gate.
