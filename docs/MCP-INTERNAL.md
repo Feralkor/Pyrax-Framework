@@ -76,7 +76,7 @@ Returns one closed catalog: `blocks`, `adapters`, or `ui`.
 
 A strong internal Golden Case is:
 
-1. provide an XPM Domain Pack to the agent;
+1. provide an Inteligência Operacional Domain Pack or synthetic operational case to the agent;
 2. call `pyrax_validate_domain_pack`;
 3. call `pyrax_assess_readiness`;
 4. call `pyrax_assess_maturity`;
@@ -84,6 +84,8 @@ A strong internal Golden Case is:
 6. verify that UNKNOWN/blocked semantics are not invented away.
 
 The comparison baseline is the same task performed without MCP, using only prompting/documentation.
+
+Reference and benchmark cases must not expose company names, credentials, customer identifiers or proprietary operational values. Use neutral product names and synthetic/minimized data.
 
 ## Validation metrics
 
