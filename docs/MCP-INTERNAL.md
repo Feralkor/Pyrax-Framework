@@ -38,6 +38,8 @@ pyrax-mcp
 
 `pyrax-mcp` communicates over stdin/stdout using MCP. It is intended to be launched by an MCP-capable host rather than used as an interactive terminal program.
 
+A vendor-neutral reference configuration is available under `examples/mcp-hosts/`.
+
 Generic host configuration shape:
 
 ```json
@@ -72,6 +74,38 @@ Lists available Solution Profile ids when called without a profile id, or return
 ### `pyrax_get_catalog`
 Returns one closed catalog: `blocks`, `adapters`, or `ui`.
 
+## V0.1.1 validation instrumentation
+
+V0.1.1 adds measurement and contract-protection capabilities without expanding the six-tool business surface.
+
+Delivered instrumentation:
+
+- deterministic evaluation harness in `src/pyrax/evaluation.py`;
+- synthetic **Inteligência Operacional** D+1 Golden Case;
+- initial adversarial cases for uncertified semantics, NULL-as-zero and conflicting sources;
+- optional metadata-only local MCP audit log;
+- public API/MCP contract snapshots;
+- vendor-neutral local stdio host examples;
+- CI enforcement that public reference material remains company-neutral.
+
+### Optional local audit
+
+Audit is disabled by default. Enable it only by explicitly setting:
+
+```text
+PYRAX_MCP_AUDIT_LOG=/local/private/path/pyrax-mcp-audit.jsonl
+```
+
+Each JSONL record contains only metadata such as tool name, framework/API version, UTC timestamp, duration, outcome and a small whitelisted result summary. Tool arguments, Domain Packs, Solution Manifests and full results are not logged.
+
+Local audit files are operational artifacts and must not be committed to this repository.
+
+### Contract stability
+
+`tests/fixtures/public-api-contract.yaml` is the current API v0.1 contract snapshot. Tests fail when public response keys or the six-tool MCP surface change without an explicit contract update.
+
+Backward-incompatible changes require an intentional API-version decision rather than an incidental code edit.
+
 ## Example agent workflow
 
 A strong internal Golden Case is:
@@ -81,7 +115,9 @@ A strong internal Golden Case is:
 3. call `pyrax_assess_readiness`;
 4. call `pyrax_assess_maturity`;
 5. ask the agent to explain only what the returned evidence supports;
-6. verify that UNKNOWN/blocked semantics are not invented away.
+6. normalize the agent observation;
+7. score it with `src/pyrax/evaluation.py`;
+8. verify that UNKNOWN/blocked semantics are not invented away.
 
 The comparison baseline is the same task performed without MCP, using only prompting/documentation.
 
@@ -91,12 +127,14 @@ Reference and benchmark cases must not expose company names, credentials, custom
 
 Track at least:
 
+- deterministic harness score;
 - time to first correct assessment;
 - number of unsupported assumptions introduced by the agent;
 - number of Pyrax rule violations;
 - number of manual corrections needed;
 - usefulness of readiness/maturity output;
-- whether the agent chooses to abstain when evidence is insufficient.
+- whether the agent chooses to abstain when evidence is insufficient;
+- variance between compatible agent hosts/models when the same case is used.
 
 ## Security boundary
 
