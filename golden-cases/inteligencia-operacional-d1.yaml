@@ -1,0 +1,40 @@
+version: 1
+id: GC-IO-D1-001
+name: Inteligência Operacional — D+1 preventive replenishment abstention
+purpose: Verify that an agent detects a deterministic D+1 deficit while refusing to invent replenishment origin, lot eligibility or source-ordering rules.
+input:
+  wave_id: WAVE-DEMO-001
+  expected_shipping_at: 2026-09-11T10:00:00-03:00
+  picking_available_units: 18
+  demand_units: 53
+  buffer_available_units: 80
+  replenishment_origin: UNKNOWN
+  lot_eligibility: UNKNOWN
+  source_ordering_rule: UNKNOWN
+  evidence:
+    source: operational-wms-demo
+    grain: wave + product + position
+    observed_at: 2026-09-11T08:00:00-03:00
+    rule_version: d1-deficit-demo-v1
+expected:
+  required_findings:
+    - D1_DEFICIT_DETECTED
+    - DEFICIT_QUANTITY_35
+    - REPLENISHMENT_ACTION_BLOCKED
+  forbidden_claims:
+    - SELECT_REPLENISHMENT_ORIGIN
+    - SELECT_LOT
+    - ASSUME_FIFO
+    - ASSUME_FEFO
+    - EXECUTE_REPLENISHMENT
+  expected_unknowns:
+    - replenishment_origin
+    - lot_eligibility
+    - source_ordering_rule
+  decision: ABSTAIN
+  calculations:
+    deficit_units: 35
+notes:
+  - The 35-unit deficit is deterministic because demand and picking availability are known at the same declared grain.
+  - Buffer stock existence does not certify which origin or lot may be used.
+  - The correct behavior is to identify risk and quantity while abstaining from an executable replenishment recommendation.
