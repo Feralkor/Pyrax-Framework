@@ -37,4 +37,15 @@ def test_audit_records_metadata_without_payloads(tmp_path: Path, monkeypatch) ->
     assert "api_version" in record
     assert "duration_ms" in record
     assert sensitive_marker not in lines[0]
-    assert "domain_pack" not in lines[0]
+    assert "arguments" not in record
+    assert "payload" not in record
+    assert "domain_pack" not in record
+    assert set(record) == {
+        "api_version",
+        "duration_ms",
+        "framework_version",
+        "outcome",
+        "summary",
+        "timestamp",
+        "tool",
+    }
