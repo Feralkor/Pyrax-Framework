@@ -1,6 +1,6 @@
 # Pyrax MCP 0.1.0 — Internal Agent Interface
 
-Status: **TECHNICALLY VALIDATED / XPM PRODUCT VALIDATION PENDING**
+Status: **TECHNICALLY VALIDATED / INTELIGÊNCIA OPERACIONAL PRODUCT VALIDATION PENDING**
 
 ## Objective
 
@@ -66,7 +66,7 @@ Technical validation proves implementation integrity, not product value.
 
 ## Product-validation gate
 
-Before expanding scope, run the internal XPM Golden Case and compare agent performance with and without MCP.
+Before expanding scope, run the internal Inteligência Operacional Golden Case and compare agent performance with and without MCP.
 
 Track at least:
 
@@ -76,5 +76,7 @@ Track at least:
 - manual corrections required;
 - usefulness of readiness/maturity outputs;
 - correct preservation of UNKNOWN, Evidence and abstention behavior.
+
+Reference cases use neutral product names and synthetic/minimized operational data; company names and proprietary identifiers must not be committed to the public framework repository.
 
 Proceed toward MCP v0.2 only if native Pyrax tools materially improve the agent workflow.
