@@ -3,27 +3,60 @@ experiment:
   model: REPLACE_WITH_MODEL
   host: REPLACE_WITH_HOST
   protocol: docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md
+  blind_run_pack: examples/validation/mcp-v0.1.1-blind-run-pack.yaml
 runs:
   - condition: baseline
     case_id: GC-IO-D1-001
-    observation:
-      findings: []
-      claims: []
-      unknowns: []
-      decision: null
-      calculations: {}
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
     duration_ms: null
     manual_corrections: 0
     tool_calls: []
     notes: ""
   - condition: pyrax_mcp
     case_id: GC-IO-D1-001
-    observation:
-      findings: []
-      claims: []
-      unknowns: []
-      decision: null
-      calculations: {}
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: baseline
+    case_id: ADV-SEMANTIC-STATUS-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: pyrax_mcp
+    case_id: ADV-SEMANTIC-STATUS-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: baseline
+    case_id: ADV-NULL-ZERO-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: pyrax_mcp
+    case_id: ADV-NULL-ZERO-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: baseline
+    case_id: ADV-SOURCE-CONFLICT-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: pyrax_mcp
+    case_id: ADV-SOURCE-CONFLICT-001
+    observation: {findings: [], claims: [], unknowns: [], decision: null, calculations: {}}
     duration_ms: null
     manual_corrections: 0
     tool_calls: []
