@@ -1,6 +1,6 @@
 # Pyrax MCP v0.1.1 — Product Validation Record
 
-Status: MECHANICAL VALIDATION COMPLETE / BLINDED AGENT EXECUTION REQUIRED
+Status: ENGINEERING COMPLETE / BLINDED AGENT EXECUTION REQUIRED
 
 ## Scope completed
 
@@ -15,7 +15,8 @@ The repository contains the deterministic validation infrastructure required to 
 - blinded experiment protocol;
 - experiment aggregation and GO/NO-GO gate;
 - complete eight-run blinded execution pack;
-- complete eight-run result template.
+- complete eight-run result template;
+- formal engineering closeout.
 
 ## Mechanical validation
 
@@ -32,7 +33,7 @@ The deterministic evaluator is covered by tests for:
 - NO-GO when MCP introduces a forbidden claim;
 - required presence of both experiment conditions.
 
-The repository CI baseline completed successfully before the blinded run pack was added. The run pack and result-template commits are documentation/data-only experiment preparation and do not alter Pyrax runtime behavior.
+The finalized blinded execution package baseline at commit `5a2774997a5244e35a4bac61440019a02be70fb0` completed the full `Pyrax Framework Quality` GitHub Actions workflow successfully. The subsequent closeout changes only align documentation/status and do not expand the frozen MCP business surface.
 
 ## Blinded execution package
 
@@ -40,7 +41,8 @@ Use:
 
 - `examples/validation/mcp-v0.1.1-blind-run-pack.yaml` as the only case input supplied to the isolated agent/host;
 - `examples/validation/mcp-v0.1.1-run-template.yaml` to record the eight outputs;
-- `docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md` as the execution protocol.
+- `docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md` as the execution protocol;
+- `docs/validation/MCP-0.1.1-ENGINEERING-CLOSEOUT.md` as the engineering handoff record.
 
 The blind run pack intentionally excludes all expected findings, forbidden claims, expected unknowns, expected decisions and expected calculation outputs.
 
@@ -58,10 +60,11 @@ Do not mark Pyrax MCP v0.1.1 as internally product-validated, and do not open MC
 
 1. all four frozen cases are executed under `baseline`;
 2. the same four cases are executed under `pyrax_mcp` using the same model/version;
-3. observations are normalized and scored by `evaluate_mcp_experiment()`;
-4. the deterministic gate passes;
-5. the results and qualitative workflow impact are recorded here.
+3. observations are frozen before evaluation;
+4. observations are normalized and scored by `evaluate_mcp_experiment()`;
+5. the deterministic gate passes with GO;
+6. the results and qualitative workflow impact are recorded here.
 
 ## Current conclusion
 
-All engineering, experiment design, case freezing, privacy safeguards, normalization contracts and GO/NO-GO mechanics are complete. The only remaining release gate is behavioral evidence from an isolated blinded agent/host.
+All v0.1.1 engineering, experiment design, case freezing, privacy safeguards, normalization contracts and GO/NO-GO mechanics are complete. No additional development is required in this track before the external blinded experiment. The only remaining release gate is behavioral evidence from an isolated agent/host.
