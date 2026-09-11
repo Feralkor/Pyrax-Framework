@@ -1,0 +1,30 @@
+experiment:
+  id: MCP-V0.1.1-INTERNAL-001
+  model: REPLACE_WITH_MODEL
+  host: REPLACE_WITH_HOST
+  protocol: docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md
+runs:
+  - condition: baseline
+    case_id: GC-IO-D1-001
+    observation:
+      findings: []
+      claims: []
+      unknowns: []
+      decision: null
+      calculations: {}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
+  - condition: pyrax_mcp
+    case_id: GC-IO-D1-001
+    observation:
+      findings: []
+      claims: []
+      unknowns: []
+      decision: null
+      calculations: {}
+    duration_ms: null
+    manual_corrections: 0
+    tool_calls: []
+    notes: ""
