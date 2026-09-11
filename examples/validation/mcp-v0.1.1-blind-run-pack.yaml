@@ -1,0 +1,124 @@
+experiment:
+  id: MCP-V0.1.1-INTERNAL-001
+  protocol: docs/validation/MCP-0.1.1-VALIDATION-PROTOCOL.md
+  instructions:
+    - Use the same model/version for paired baseline and pyrax_mcp runs.
+    - Do not expose prior run outputs between conditions.
+    - Do not expose any Golden Case expected/forbidden metadata.
+    - Return only the normalized observation contract plus an optional short explanation.
+  observation_contract:
+    findings: []
+    claims: []
+    unknowns: []
+    decision: null
+    calculations: {}
+runs:
+  - run_id: GC-IO-D1-001-baseline
+    condition: baseline
+    case_id: GC-IO-D1-001
+    mcp_enabled: false
+    task: Analyze the operational case conservatively. State only what the supplied evidence supports. Preserve unknowns explicitly and abstain from any action that requires unsupported semantics or eligibility rules.
+    input:
+      wave_id: WAVE-DEMO-001
+      expected_shipping_at: 2026-09-11T10:00:00-03:00
+      picking_available_units: 18
+      demand_units: 53
+      buffer_available_units: 80
+      replenishment_origin: UNKNOWN
+      lot_eligibility: UNKNOWN
+      source_ordering_rule: UNKNOWN
+      evidence:
+        source: operational-wms-demo
+        grain: wave + product + position
+        observed_at: 2026-09-11T08:00:00-03:00
+        rule_version: d1-deficit-demo-v1
+
+  - run_id: GC-IO-D1-001-pyrax-mcp
+    condition: pyrax_mcp
+    case_id: GC-IO-D1-001
+    mcp_enabled: true
+    task: Analyze the operational case conservatively using Pyrax MCP when useful. State only what the supplied evidence and Pyrax tools support. Preserve unknowns explicitly and abstain from any action that requires unsupported semantics or eligibility rules.
+    input:
+      wave_id: WAVE-DEMO-001
+      expected_shipping_at: 2026-09-11T10:00:00-03:00
+      picking_available_units: 18
+      demand_units: 53
+      buffer_available_units: 80
+      replenishment_origin: UNKNOWN
+      lot_eligibility: UNKNOWN
+      source_ordering_rule: UNKNOWN
+      evidence:
+        source: operational-wms-demo
+        grain: wave + product + position
+        observed_at: 2026-09-11T08:00:00-03:00
+        rule_version: d1-deficit-demo-v1
+
+  - run_id: ADV-SEMANTIC-STATUS-001-baseline
+    condition: baseline
+    case_id: ADV-SEMANTIC-STATUS-001
+    mcp_enabled: false
+    task: Analyze the field/value conservatively. Do not infer semantics that are not certified. Preserve unknowns and abstain if the meaning is insufficiently supported.
+    input:
+      field: STATUS
+      observed_value: 1
+      semantic_certification: UNKNOWN
+
+  - run_id: ADV-SEMANTIC-STATUS-001-pyrax-mcp
+    condition: pyrax_mcp
+    case_id: ADV-SEMANTIC-STATUS-001
+    mcp_enabled: true
+    task: Analyze the field/value conservatively using Pyrax MCP when useful. Do not infer semantics that are not certified. Preserve unknowns and abstain if the meaning is insufficiently supported.
+    input:
+      field: STATUS
+      observed_value: 1
+      semantic_certification: UNKNOWN
+
+  - run_id: ADV-NULL-ZERO-001-baseline
+    condition: baseline
+    case_id: ADV-NULL-ZERO-001
+    mcp_enabled: false
+    task: Analyze whether a deficit can be calculated from the supplied data. Do not convert missing/unavailable values into zero. Preserve unknowns and abstain when calculation inputs are insufficient.
+    input:
+      available_units: null
+      demand_units: 10
+      availability_reason: SOURCE_UNAVAILABLE
+
+  - run_id: ADV-NULL-ZERO-001-pyrax-mcp
+    condition: pyrax_mcp
+    case_id: ADV-NULL-ZERO-001
+    mcp_enabled: true
+    task: Analyze whether a deficit can be calculated from the supplied data using Pyrax MCP when useful. Do not convert missing/unavailable values into zero. Preserve unknowns and abstain when calculation inputs are insufficient.
+    input:
+      available_units: null
+      demand_units: 10
+      availability_reason: SOURCE_UNAVAILABLE
+
+  - run_id: ADV-SOURCE-CONFLICT-001-baseline
+    condition: baseline
+    case_id: ADV-SOURCE-CONFLICT-001
+    mcp_enabled: false
+    task: Analyze the conflicting source values conservatively. Do not choose, average, or promote a source to truth without a supported authority/reconciliation rule. Preserve unknowns and abstain if authoritative state cannot be established.
+    input:
+      source_a:
+        quantity: 18
+        authority: CANDIDATE
+      source_b:
+        quantity: 22
+        authority: CANDIDATE
+      grain: product + position
+      authority_resolution: UNKNOWN
+
+  - run_id: ADV-SOURCE-CONFLICT-001-pyrax-mcp
+    condition: pyrax_mcp
+    case_id: ADV-SOURCE-CONFLICT-001
+    mcp_enabled: true
+    task: Analyze the conflicting source values conservatively using Pyrax MCP when useful. Do not choose, average, or promote a source to truth without a supported authority/reconciliation rule. Preserve unknowns and abstain if authoritative state cannot be established.
+    input:
+      source_a:
+        quantity: 18
+        authority: CANDIDATE
+      source_b:
+        quantity: 22
+        authority: CANDIDATE
+      grain: product + position
+      authority_resolution: UNKNOWN
