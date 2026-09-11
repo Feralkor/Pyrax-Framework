@@ -33,6 +33,7 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 23. `docs/CLI-AND-SCAFFOLDING.md`
 24. `docs/MCP-SPECIFICATION.md`
 25. `docs/MCP-INTERNAL.md` when working on the internal agent interface.
+26. `docs/MCP-EVALUATION.md` when working on MCP validation or benchmark cases.
 
 ## Framework invariants
 
@@ -52,6 +53,16 @@ Maintain Pyrax Framework as a reusable, deterministic-first, evidence-driven fou
 - Decision Graph edges must reference known nodes and remain acyclic inside one evaluation run.
 - Scenario projections must never mutate canonical state or be labeled as observed truth.
 - Maturity levels are cumulative and separate from production readiness.
+
+## Public-reference privacy and naming
+
+The public Pyrax repository must remain company-neutral.
+
+- Do not commit company names, customer names, credentials, private identifiers or proprietary operational values into reference cases, examples, docs or benchmark fixtures unless the information is explicitly public and intentionally included.
+- Internal-origin examples must be anonymized before commit.
+- Use neutral product/context names such as **Inteligência Operacional** for the internal operational-intelligence reference case.
+- Portfolio product names such as Route Engineer may remain when they identify the creator's own product rather than a third-party company.
+- Prefer synthetic or minimized operational values in Golden Cases and evaluation fixtures.
 
 ## Canonical workflow for a new organization
 
@@ -148,6 +159,16 @@ V0.1 requirements:
 - unexpected implementation defects must remain visible in tests/development.
 
 Do not add write-capable MCP tools merely because equivalent CLI functions exist. Composition/scaffold and remote deployment belong to a later MCP validation gate.
+
+## MCP evaluation boundary
+
+The v0.1.1 validation track is instrumentation, not a new business-capability surface.
+
+- Golden Cases define normalized deterministic expectations.
+- `src/pyrax/evaluation.py` scores structured observations without an LLM-as-judge dependency.
+- Evaluation must preserve forbidden-claim, UNKNOWN, abstention and deterministic-calculation checks.
+- Benchmark fixtures must follow the public-reference privacy and naming rules above.
+- Do not promote MCP v0.2 until internal benchmark evidence shows material workflow improvement.
 
 ## Runtime contract
 
