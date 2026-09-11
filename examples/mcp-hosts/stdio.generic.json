@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "pyrax": {
+      "command": "pyrax-mcp"
+    }
+  }
+}
