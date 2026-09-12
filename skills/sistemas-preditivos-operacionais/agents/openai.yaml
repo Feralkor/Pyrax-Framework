@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sistemas Preditivos Operacionais"
+  short_description: "Conceba sistemas operacionais preditivos confiáveis"
+  default_prompt: "Use $sistemas-preditivos-operacionais para conceber um sistema que antecipe riscos e recomende ações nesta operação."

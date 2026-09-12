@@ -216,6 +216,10 @@ pyrax scaffold route-ops --profile fleet-intelligence --domain-pack domain-pack.
 
 These are reusable composition examples, not certified customer Domain Packs.
 
+## Reusable agent skill
+
+The complete Portuguese [sistemas-preditivos-operacionais skill](skills/README.md) captures the multidisciplinary operational-prediction method for reuse in new projects. Its instructions, supporting references, usage examples and relationship to canonical Pyrax contracts are versioned under `skills/`.
+
 ## Repository structure
 
 - `src/pyrax/` — public API, CLI, evaluation, composition, catalogs, runtime, readiness and maturity;
@@ -223,6 +227,7 @@ These are reusable composition examples, not certified customer Domain Packs.
 - `solution-profiles/` — reusable product presets;
 - `docs/` — canonical recipe, architecture, productization, MCP and evaluation contracts;
 - `schemas/` — Domain Pack and Solution Manifest contracts;
+- `skills/` — reusable agent instructions, references and usage guidance;
 - `templates/` — discovery/product/engineering templates;
 - `domain-packs/` — domain customization template;
 - `patterns/` — analytical/decision mechanics;
